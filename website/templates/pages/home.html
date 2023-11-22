@@ -1,3 +1,15 @@
 <!-- pages/templates/pages/home.html -->
-
-<h1>Hello, World!</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Mon Projet Django{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'register' %}">S'inscrire</a>
+        <a href="{% url 'login' %}">Se connecter</a>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>

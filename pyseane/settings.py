@@ -77,7 +77,11 @@ WSGI_APPLICATION = 'pyseane.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'mydatabase',
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
+        'HOST': 'localhost',  # Ou l'adresse IP de votre serveur PostgreSQL
+        'PORT': '5432',      # Port par défaut de PostgreSQL
     }
 }
 
