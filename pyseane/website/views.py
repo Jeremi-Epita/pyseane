@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import SignUpForm
 
-# Create your views here.
+def register(request):
+    return render(request, 'pages/register.html')
