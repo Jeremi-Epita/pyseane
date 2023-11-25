@@ -1,8 +1,11 @@
 from django.urls import path
-from .views import register
+from .views import *
 
 urlpatterns = [
-    path('', register, name='register'),
+    path('', home, name='home'),
+    path('register', register, name='register'),
+    path('login', login_user, name='login_user'),
+    path('cgu', cgu, name='cgu'),
     # Add more URLs as needed
 ]
 

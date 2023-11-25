@@ -20,13 +20,14 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # myproject/settings.py
-AUTH_USER_MODEL = 'website.CustomUser'
+AUTH_USER_MODEL = 'website.Pyseane_User'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+#SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = "&u=x^o6m2^@%5wi@ht5o(4c!l6e2w8pe4)e+7u5j7t3)qnh9ig"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
