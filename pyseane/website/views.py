@@ -5,14 +5,20 @@ from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from .models import Pyseane_User, campagne_fish
 from .forms import RegistrationForm, LoginForm, CampagneForm
+from .module.Pywebcloner import clone
 
 def home(request):
     if request.user.is_authenticated:
         username = request.user.username
         email = request.user.email
-        campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
-        if campagne:
-            return HttpResponse(f"Connecté en tant que {username}, adresse e-mail : {email} et campagne {campagne.id}")
+        campagnes = campagne_fish.objects.filter(utilisateur=request.user)
+        context = {
+            'username': username,
+            'email': email,
+            'campagnes': campagnes,
+        }
+        if campagnes:
+            return render(request, 'pages/debug.html', context)
         else:
             return redirect(campagne_register)
     else:
@@ -82,7 +88,15 @@ def campagne_register(request):
                 nom=nom_campagne,
                 url=url_campagne
             )
+            # TODO verifier si la campagne existe deja ? pas obligatoire
             nouvelle_campagne.save()
+            clone(nouvelle_campagne.id,url_campagne)
+
             return HttpResponse("Parfait", status=200)
 
     return HttpResponse("Méthode non supportée.", status=405)
+
+def detail_campagne(request, id):
+    campagnes = campagne_fish.objects.filter(id=id)
+    #TODO verifier si l'user qui get est l'owner de la campagne
+    return render(request, "pages/pages_fishing/"+str(id)+".html")

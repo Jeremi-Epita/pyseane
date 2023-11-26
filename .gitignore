@@ -5,4 +5,4 @@ db.sqlite3
 *.env
 .vscode/
 .idea/
-
+/pyseane/website/tempates/pages/pages_fishing/*
