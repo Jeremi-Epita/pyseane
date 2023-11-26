@@ -27,3 +27,15 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control form-control-lg'}),
         required=True
     )
+
+
+class CampagneForm(forms.Form):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+        required=True
+    )
+    url = forms.URLField(
+        label='URL',
+        required=True,
+        widget=forms.URLInput(attrs={'class': 'form-control form-control-lg'})
+    )

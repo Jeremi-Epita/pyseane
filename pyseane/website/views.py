@@ -3,17 +3,20 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
-from .models import Pyseane_User
-from .forms import RegistrationForm, LoginForm
+from .models import Pyseane_User, campagne_fish
+from .forms import RegistrationForm, LoginForm, CampagneForm
 
 def home(request):
     if request.user.is_authenticated:
         username = request.user.username
         email = request.user.email
-        return HttpResponse(f"Connecté en tant que {username}, adresse e-mail : {email}")
+        campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
+        if campagne:
+            return HttpResponse(f"Connecté en tant que {username}, adresse e-mail : {email} et campagne {campagne.id}")
+        else:
+            return redirect(campagne_register)
     else:
-        # L'utilisateur n'est pas connecté
-        return redirect(login)
+        return redirect(login_user)
 
 def cgu(request):
     return render(request, 'pages/cgu.html')
@@ -47,7 +50,6 @@ def register(request):
 
 def login_user(request):
     if request.method == 'POST':
-        print(request.POST)
         form = LoginForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -65,3 +67,22 @@ def login_user(request):
         form = LoginForm()
 
     return render(request, 'pages/login.html', {'form': form})
+
+def campagne_register(request):
+    if request.method == 'GET':
+        form = CampagneForm()
+        return render(request, 'pages/campagne.html', {'form': form})
+    elif request.method == 'POST':
+        form = CampagneForm(data=request.POST)
+        if form.is_valid():
+            nom_campagne = form.cleaned_data.get('name')
+            url_campagne = form.cleaned_data.get('url')
+            nouvelle_campagne = campagne_fish.objects.create(
+                utilisateur=request.user,
+                nom=nom_campagne,
+                url=url_campagne
+            )
+            nouvelle_campagne.save()
+            return HttpResponse("Parfait", status=200)
+
+    return HttpResponse("Méthode non supportée.", status=405)
