@@ -6,19 +6,7 @@
     <title>Mes Campagnes</title>
 </head>
 <body>
-    <h1>Bienvenue, {{ username }}!</h1>
-    <p>Adresse e-mail : {{ email }}</p>
 
-    {% if campagnes %}
-        <h2>Mes Campagnes :</h2>
-        <ul>
-            {% for campagne in campagnes %}
-                <li>{{ campagne.nom }} - {{ campagne.url }} url : <a href="http://localhost:8000/campagnes/{{ campagne.id }}">url</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Vous n'avez pas encore créé de campagne.</p>
-    {% endif %}
 </body>
 </html>
 

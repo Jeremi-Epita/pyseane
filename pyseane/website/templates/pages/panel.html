@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .menu-item {
+            margin: 10px 0;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block; /* Assure que chaque lien est sur une nouvelle ligne */
+        }
+
+        .menu-item:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                display: none;
+                position: absolute;
+                z-index: 1;
+                width: 100%;
+                background-color: #333;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .menu-items {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+            }
+
+            .main-content {
+                margin-top: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="burger-menu">&#9776;</div>
+        <div class="menu-items">
+            <a href="/panel" class="menu-item">Dashboard</a>
+            <a href="/users" class="menu-item">Email</a>
+            <a href="/settings" class="menu-item">Settings</a>
+            <a href="/logout" class="menu-item">déconnexion</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Your main content goes here -->
+        <h1>Bienvenue, {{ username }}!</h1>
+    <p>Adresse e-mail : {{ email }}</p>
+
+{% if selected_campagne %}
+    <h2>Informations sur la campagne sélectionnée:</h2>
+    <p>Nom: {{ selected_campagne.nom }}</p>
+    <p>Autres détails...</p>
+{% endif %}
+    </div>
+</div>
+
+<script>
+    // Toggle sidebar on burger menu click
+    document.querySelector('.burger-menu').addEventListener('click', function() {
+        document.querySelector('.sidebar').classList.toggle('show-sidebar');
+    });
+</script>
+
+</body>
+</html>

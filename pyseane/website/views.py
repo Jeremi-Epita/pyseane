@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from .models import Pyseane_User, campagne_fish
 from .forms import RegistrationForm, LoginForm, CampagneForm
@@ -18,7 +18,7 @@ def home(request):
             'campagnes': campagnes,
         }
         if campagnes:
-            return render(request, 'pages/debug.html', context)
+            return redirect(panel)
         else:
             return redirect(campagne_register)
     else:
@@ -74,6 +74,11 @@ def login_user(request):
 
     return render(request, 'pages/login.html', {'form': form})
 
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect(login_user)
+
 def campagne_register(request):
     if request.method == 'GET':
         form = CampagneForm()
@@ -92,11 +97,31 @@ def campagne_register(request):
             nouvelle_campagne.save()
             clone(nouvelle_campagne.id,url_campagne)
 
-            return HttpResponse("Parfait", status=200)
+            return redirect(panel)
 
     return HttpResponse("Méthode non supportée.", status=405)
 
 def detail_campagne(request, id):
-    campagnes = campagne_fish.objects.filter(id=id)
-    #TODO verifier si l'user qui get est l'owner de la campagne
-    return render(request, "pages/pages_fishing/"+str(id)+".html")
+    campagnes = campagne_fish.objects.get(id=id)
+    user_camp = campagnes.utilisateur.username
+    if user_camp == request.user.username:
+        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
+    else:
+        return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
+
+def panel(request):
+    if request.user.is_authenticated:
+        campagne_id = request.GET.get('id')
+        if campagne_id:
+            selected_campagne = campagne_fish.objects.get(id=campagne_id)
+        else:
+            selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
+            return redirect("/panel?id="+str(selected_campagne.id))
+        context = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'selected_campagne': selected_campagne,
+        }
+        return render(request, 'pages/panel.html', context)
+    else:
+        return redirect(home)
