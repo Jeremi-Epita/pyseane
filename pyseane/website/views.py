@@ -12,11 +12,6 @@ def home(request):
         username = request.user.username
         email = request.user.email
         campagnes = campagne_fish.objects.filter(utilisateur=request.user)
-        context = {
-            'username': username,
-            'email': email,
-            'campagnes': campagnes,
-        }
         if campagnes:
             return redirect(panel)
         else:
@@ -112,6 +107,7 @@ def detail_campagne(request, id):
 def panel(request):
     if request.user.is_authenticated:
         campagne_id = request.GET.get('id')
+        #TODO add trycatch pour invalid uuid
         if campagne_id:
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
@@ -122,6 +118,9 @@ def panel(request):
             'email': request.user.email,
             'selected_campagne': selected_campagne,
         }
-        return render(request, 'pages/panel.html', context)
+        if request.user.username == selected_campagne.utilisateur.username:
+            return render(request, 'pages/panel.html', context)
+        else:
+            return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:
         return redirect(home)
