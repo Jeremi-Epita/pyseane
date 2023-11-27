@@ -40,18 +40,24 @@ class CampagneForm(forms.Form):
         required=True,
         widget=forms.URLInput(attrs={'class': 'form-control form-control-lg'})
     )
-    
+
+
 class CampagneUtilisateurForm(forms.Form):
     def __init__(self, utilisateur, selected_campagne_id, *args, **kwargs):
         super(CampagneUtilisateurForm, self).__init__(*args, **kwargs)
+
+        # Filtrer les campagnes avant d'appeler super().__init__()
         campagnes = campagne_fish.objects.filter(utilisateur=utilisateur)
-        
+        selected_camp = campagnes.get(id=selected_campagne_id)
+
+        choice_camp = campagnes.exclude(id=selected_campagne_id)
+
         self.fields['campagne'] = forms.ModelChoiceField(
-            queryset=campagnes,
-            empty_label=None,
+            queryset=choice_camp,
+            empty_label=selected_camp.nom,  # Ajouter cette ligne
             widget=forms.Select(attrs={'onchange': 'this.form.submit();'}),
-            initial=selected_campagne_id
         )
+
 
 
 

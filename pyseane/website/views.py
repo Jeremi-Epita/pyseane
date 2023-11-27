@@ -123,8 +123,7 @@ def panel(request):
             return response
 
         # Passer l'ID de la campagne actuellement sélectionnée au formulaire
-        form = CampagneUtilisateurForm(request.user, selected_campagne.id, request.GET, initial={'campagne': selected_campagne.id})
-        
+        form = CampagneUtilisateurForm(request.user, selected_campagne.id, request.GET)
         if form.is_valid():
             selected_campagne = form.cleaned_data['campagne']
             response = redirect("panel")
