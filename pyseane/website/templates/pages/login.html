@@ -8,18 +8,18 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
-      background: linear-gradient(to right, #000000, #333333); /* Dégradé de couleurs avec noir */
+      background: linear-gradient(to right, #ff0000, #000000); /* Dégradé de rouge et de noir */
       height: 100vh;
       margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Arial', sans-serif;
-      color: rgba(0, 0, 0, 0.2);
+      color: #000; /* Couleur du texte en noir */
     }
 
     .login-container {
-      max-width: 400px;
+      max-width: 500px; /* Augmentation de la largeur du formulaire */
       width: 100%;
       padding: 30px;
       border-radius: 10px;
@@ -30,7 +30,7 @@
 
     .login-container h2 {
       margin-bottom: 20px;
-      color: #ea515a;
+      color: #ff0000;
     }
 
     .form-group {
@@ -45,7 +45,7 @@
 
     .form-control {
       width: 100%;
-      padding: 12px;
+      padding: 15px; /* Augmentation de la hauteur des champs de formulaire */
       box-sizing: border-box;
       border: 1px solid #ddd;
       border-radius: 5px;
@@ -54,8 +54,8 @@
 
     .btn-login {
       width: 100%;
-      padding: 12px;
-      background-color: #ea515a;
+      padding: 15px; /* Augmentation de la hauteur du bouton */
+      background-color: #ff0000;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -63,7 +63,7 @@
     }
 
     .btn-login:hover {
-      background-color: #ff0000;
+      background-color: #cc0000; /* Une teinte plus sombre de rouge au survol */
     }
 
     .register-link {
@@ -72,13 +72,13 @@
     }
 
     .register-link a {
-      color: #ea515a;
+      color: #ff0000;
       text-decoration: none;
       font-weight: bold;
     }
 
     .register-link a:hover {
-      color: #ff0000;
+      color: #cc0000; /* Une teinte plus sombre de rouge au survol */
     }
   </style>
 </head>
@@ -86,7 +86,8 @@
 
   <div class="login-container">
     <h2>Connexion</h2>
-    <form>
+    <form method="post" action="">
+      {% csrf_token %}
       <div class="form-group">
         <label for="login">Nom d'utilisateur</label>
         {{ form.username }}
@@ -98,7 +99,7 @@
       <button type="submit" class="btn btn-login">Se Connecter</button>
     </form>
     <div class="register-link">
-      <p>Vous n'avez pas de compte? <a href="register.html">Inscrivez-vous ici</a></p>
+      <p>Vous n'avez pas de compte? <a href="register">Inscrivez-vous ici</a></p>
     </div>
   </div>
 
