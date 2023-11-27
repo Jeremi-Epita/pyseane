@@ -108,7 +108,6 @@ def detail_campagne(request, id):
     else:
         return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
 
-@login_required
 def panel(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
@@ -147,6 +146,28 @@ def panel(request):
 
 
 def email(request):
+    if request.user.is_authenticated:
+        campagne_id = request.COOKIES.get('campagne_id', 'null')
+        if campagne_id != "null":
+            selected_campagne = campagne_fish.objects.get(id=campagne_id)
+        else:
+            selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
+            response = redirect("/panel/email")
+            response.set_cookie('campagne_id', str(selected_campagne.id))
+            return response
+        context = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'selected_campagne': selected_campagne,
+        }
+        if request.user.username == selected_campagne.utilisateur.username:
+            return render(request, 'pages/email.html', context)
+        else:
+            return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
+    else:
+        return redirect(home)
+
+def gestion_campagne(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
         if campagne_id != "null":

@@ -11,6 +11,7 @@ urlpatterns = [
     path('campagnes/<uuid:id>', detail_campagne, name='detail_campagne'),
     path('panel', panel, name='panel'),
     path('panel/email', email, name='email'),
+    path('panel/campagnes', gestion_campagne, name='gestion_campagne'),
     # Add more URLs as needed
 ]
 
