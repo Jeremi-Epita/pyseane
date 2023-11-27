@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <!-- Ajouter les liens vers les fichiers Bootstrap CSS et Chart.js (CDN) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
@@ -38,7 +40,13 @@
     .campaign-item {
       margin-bottom: 10px;
     }
+    .centered-link {
+        margin-left: auto;
+        margin-right: auto;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 </head>
 <body>
 
@@ -49,6 +57,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
+            <li class="centered-link">
+                <form method="get" action="">
+                    {{ form.as_p }}
+              </li>
             <li class="nav-item">
                 <a class="nav-link" href="/panel">Dashboard</a>
               </li>
@@ -77,19 +89,24 @@
     </div>
 
 <h2>Panel utilisateur</h2>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Ajouter le conteneur du graphique -->
 <div style="width: 80%; margin: auto;">
     <canvas id="campagnesChart"></canvas>
 </div>
-
-<!-- Ajouter le script pour générer le graphique -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Données pour le graphique (à remplacer par vos propres données)
+        var data = [
+            { month: 'Janvier', count: 10 },
+            { month: 'Février', count: 20 },
+            { month: 'Mars', count: 15 },
+            // ... Ajoutez les données pour les autres mois
+        ];
+
         var ctx = document.getElementById('campagnesChart').getContext('2d');
-        var data = {{ data|safe }};
-        
+
         var labels = data.map(function(item) {
             return item.month;
         });
@@ -99,30 +116,34 @@
         });
 
         var chart = new Chart(ctx, {
-            type: 'bar',
+            type: 'pie', // Utiliser 'pie' pour un graphique en camembert
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Campagnes créées par mois',
                     data: values,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Couleur du fond
-                    borderColor: 'rgba(75, 192, 192, 1)',      // Couleur de la bordure
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',  // Rouge
+                        'rgba(54, 162, 235, 0.6)', // Bleu
+                        'rgba(255, 206, 86, 0.6)', // Jaune
+                        // ... Ajoutez des couleurs pour d'autres mois
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        // ...
+                    ],
                     borderWidth: 1
                 }]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                responsive: true,
+                maintainAspectRatio: false,
+                // Ajouter d'autres options si nécessaire
             }
         });
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- Affichez les détails de l'utilisateur et de la campagne actuelle ici -->

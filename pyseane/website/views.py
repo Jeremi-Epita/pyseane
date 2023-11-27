@@ -192,4 +192,3 @@ def gestion_campagne(request):
             return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:
         return redirect(home)
-
