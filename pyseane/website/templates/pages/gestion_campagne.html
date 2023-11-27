@@ -101,28 +101,12 @@
         <!-- Your main content goes here -->
         <h1>Bienvenue, {{ username }}!</h1>
     <p>Adresse e-mail : {{ email }}</p>
-
-{% block content %}
-  <h2>Email personnalisation</h2>
-
-  <form method="post" action="">
-    {% csrf_token %}
-
-    <label for="id_name">Mail Name:</label><br>
-    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required><br>
-
-    <label for="id_receiver">Receiver:</label><br>
-    <textarea id="id_receiver" name="receiver" rows="5" cols="33" required>{{ form.receiver.value }}</textarea><br>
-
-    <label for="id_subject">Subject:</label><br>
-    <input type="text" id="id_subject" name="subject" value="{{ form.subject.value }}" required><br>
-
-    <label for="id_content">Content:</label><br>
-    <textarea id="id_content" name="content" rows="5" cols="33" required>{{ form.content.value }}</textarea><br>
-
-    <button type="submit">Submit</button>
-  </form>
-{% endblock %}
+        <h1>Liste des campagnes :</h1>
+        <ul>
+    {% for campagne in campagnes %}
+      <li>Nom : {{ campagne.nom }} | Page clonée : {{ campagne.url }} | <a href="/campagnes/{{ campagne.id }}">lien vers la page</a></li>
+    {% endfor %}
+  </ul>
     </div>
 </div>
 

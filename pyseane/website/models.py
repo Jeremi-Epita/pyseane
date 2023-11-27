@@ -37,3 +37,13 @@ class campagne_fish(models.Model):
 
     def __str__(self):
         return self.nom
+
+class target(models.Model):
+    id_email_hashed = models.CharField(primary_key=True, max_length=65)
+    campagne = models.ForeignKey(campagne_fish, on_delete=models.CASCADE)
+    has_read = models.BooleanField(default=False)
+    has_open = models.BooleanField(default=False)
+    has_logged = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.nom

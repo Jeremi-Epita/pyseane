@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from .models import Pyseane_User, campagne_fish
-from .forms import RegistrationForm, LoginForm, CampagneForm
+from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
 from .forms import CampagneUtilisateurForm
 from django.contrib.auth.decorators import login_required
@@ -103,11 +103,8 @@ def campagne_register(request):
 
 def detail_campagne(request, id):
     campagnes = campagne_fish.objects.get(id=id)
-    user_camp = campagnes.utilisateur.username
-    if user_camp == request.user.username:
-        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
-    else:
-        return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
+    return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
+
 
 def panel(request):
     if request.user.is_authenticated:
@@ -148,10 +145,10 @@ def panel(request):
         return redirect(home)
 
 
-
 def email(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
+
         if campagne_id != "null":
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
@@ -159,11 +156,27 @@ def email(request):
             response = redirect("/panel/email")
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
+
+        if request.method == 'POST':
+            form = EmailForm(request.POST)
+            if form.is_valid():
+
+                # Traitez les données du formulaire ici
+                # Vous pouvez accéder aux données du formulaire avec form.cleaned_data
+                # Par exemple, form.cleaned_data['name'], form.cleaned_data['receiver'], etc.
+
+                # Redirigez ou effectuez d'autres actions après le traitement du formulaire
+                return redirect(email)
+        else:
+            form = EmailForm()
+
         context = {
             'username': request.user.username,
             'email': request.user.email,
             'selected_campagne': selected_campagne,
+            'form': form,  # Ajoutez le formulaire au contexte
         }
+
         if request.user.username == selected_campagne.utilisateur.username:
             return render(request, 'pages/email.html', context)
         else:
@@ -178,16 +191,18 @@ def gestion_campagne(request):
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
-            response = redirect("/panel/email")
+            response = redirect("/panel/campagnes")
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
+
+        all_campagne = campagne_fish.objects.filter(utilisateur=request.user)
         context = {
             'username': request.user.username,
             'email': request.user.email,
-            'selected_campagne': selected_campagne,
+            'campagnes': all_campagne
         }
         if request.user.username == selected_campagne.utilisateur.username:
-            return render(request, 'pages/email.html', context)
+            return render(request, 'pages/gestion_campagne.html', context)
         else:
             return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:

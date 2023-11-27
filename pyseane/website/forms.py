@@ -61,3 +61,10 @@ class CampagneUtilisateurForm(forms.Form):
                 'onchange': 'this.form.submit();',
             }),
         )
+
+
+class EmailForm(forms.Form):
+    name = forms.CharField(label='Mail Name', max_length=100, required=True, initial='')
+    receiver = forms.CharField(label='Receiver', widget=forms.Textarea, required=True, initial='')
+    subject = forms.CharField(label='Subject', max_length=100, required=True, initial='')
+    content = forms.CharField(label='Content', widget=forms.Textarea, required=True, initial='')
