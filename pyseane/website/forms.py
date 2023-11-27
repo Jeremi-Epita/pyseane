@@ -61,10 +61,3 @@ class CampagneUtilisateurForm(forms.Form):
                 'onchange': 'this.form.submit();',
             }),
         )
-
-
-
-
-
-
-
