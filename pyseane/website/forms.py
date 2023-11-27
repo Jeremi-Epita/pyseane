@@ -55,8 +55,14 @@ class CampagneUtilisateurForm(forms.Form):
         self.fields['campagne'] = forms.ModelChoiceField(
             queryset=choice_camp,
             empty_label=selected_camp.nom,  # Ajouter cette ligne
-            widget=forms.Select(attrs={'onchange': 'this.form.submit();'}),
+            widget=forms.Select(attrs={
+                'class': 'form-control custom-select',  # Ajouter des classes de style personnalisé
+                'style': 'font-size: 16px; height: 38px; width: 200px;',  # Ajouter des styles personnalisés
+                'onchange': 'this.form.submit();',
+            }),
         )
+
+
 
 
 

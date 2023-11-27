@@ -1,130 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+  <!-- Ajouter les liens vers les fichiers Bootstrap CSS et Chart.js (CDN) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(to right, #ff0000, #000000);
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+    }
 
-        .container {
-            display: flex;
-        }
+    .navbar {
+      background-color: #333; /* Couleur de fond de la barre de menu */
+    }
 
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            background-color: #333;
-            color: white;
-            padding-top: 20px;
-        }
+    .navbar-nav .nav-link {
+      color: #fff; /* Couleur du texte dans la barre de menu */
+    }
 
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
+    .dashboard-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      background-color: #272727; /* Couleur de fond du conteneur */
+      text-align: center;
+    }
 
-        .burger-menu {
-            display: none;
-            cursor: pointer;
-            font-size: 24px;
-            margin-left: 10px;
-        }
+    .campaign-list {
+      list-style: none;
+      padding: 0;
+    }
 
-        .menu-items {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 50px;
-        }
-
-        .menu-item {
-            margin: 10px 0;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-            display: block; /* Assure que chaque lien est sur une nouvelle ligne */
-        }
-
-        .menu-item:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                display: none;
-                position: absolute;
-                z-index: 1;
-                width: 100%;
-                background-color: #333;
-            }
-
-            .burger-menu {
-                display: block;
-            }
-
-            .menu-items {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding-top: 50px;
-            }
-
-            .main-content {
-                margin-top: 50px;
-            }
-        }
-    </style>
+    .campaign-item {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="sidebar">
-        <div class="burger-menu">&#9776;</div>
-        <div class="menu-items">
-            <a href="/panel" class="menu-item">Dashboard</a>
-            <a href="/panel/email" class="menu-item">Email</a>
-            <a href="/panel/campagnes" class="menu-item">Campagnes</a>
-            <a href="/logout" class="menu-item">déconnexion</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Tableau de Bord</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/panel">Dashboard</a>
+              </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/panel/email">Email</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/campagnes">Campagne</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">déconnexion</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="dashboard-container">
+            <h2>Bienvenue, {{ username }} !</h2>
+            {% if selected_campagne %}
+            <p>Votre campagne: {{ selected_campagne.nom }}</p>
+            <h3>Vos Campagnes :</h3>
+            <form method="get" action="">
+                {{ form.as_p }}            
+            {% endif %}
         </div>
     </div>
 
-    <div class="main-content">
-        <!-- Your main content goes here -->
-        <h1>Bienvenue, {{ username }}!</h1>
-    <p>Adresse e-mail : {{ email }}</p>
-
-{% if selected_campagne %}
-    <h2>Informations sur la campagne sélectionnée:</h2>
-    <p>Nom: {{ selected_campagne.nom }}</p>
-    <p>Autres détails...</p>
-{% endif %}
 <h2>Panel utilisateur</h2>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<form method="get" action="">
-    {{ form.as_p }}
-</form>
+<!-- Ajouter le conteneur du graphique -->
+<div style="width: 80%; margin: auto;">
+    <canvas id="campagnesChart"></canvas>
+</div>
+
+<!-- Ajouter le script pour générer le graphique -->
 <script>
-    // Toggle sidebar on burger menu click
-    document.querySelector('.burger-menu').addEventListener('click', function() {
-        document.querySelector('.sidebar').classList.toggle('show-sidebar');
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('campagnesChart').getContext('2d');
+        var data = {{ data|safe }};
+        
+        var labels = data.map(function(item) {
+            return item.month;
+        });
+
+        var values = data.map(function(item) {
+            return item.count;
+        });
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Campagnes créées par mois',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Couleur du fond
+                    borderColor: 'rgba(75, 192, 192, 1)',      // Couleur de la bordure
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     });
 </script>
-    </div>
-</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- Affichez les détails de l'utilisateur et de la campagne actuelle ici -->
-
-
-
 </body>
 </html>

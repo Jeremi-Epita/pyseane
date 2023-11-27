@@ -8,6 +8,7 @@ from .forms import RegistrationForm, LoginForm, CampagneForm
 from .module.Pywebcloner import clone
 from .forms import CampagneUtilisateurForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 
 
@@ -137,6 +138,7 @@ def panel(request):
             'email': request.user.email,
             'selected_campagne': selected_campagne,
             'form': form,
+            'all_campagnes' : campagne_fish.objects.filter(utilisateur=request.user)
         }
 
         if request.user.username == selected_campagne.utilisateur.username:
@@ -191,3 +193,4 @@ def gestion_campagne(request):
             return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:
         return redirect(home)
+
