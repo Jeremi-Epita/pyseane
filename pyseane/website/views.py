@@ -63,7 +63,9 @@ def login_user(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('login_user')
+                response = redirect('login_user')
+                response.delete_cookie('campagne_id')
+                return response
             else:
                 form.add_error(None, 'Nom d\'utilisateur ou mot de passe incorrect.')
     elif request.user.is_authenticated:
@@ -111,7 +113,7 @@ def detail_campagne(request, id):
 def panel(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
-        
+        print(campagne_id)
         # Récupérer la campagne actuellement sélectionnée
         if campagne_id != "null":
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
@@ -122,6 +124,7 @@ def panel(request):
             return response
 
         # Passer l'ID de la campagne actuellement sélectionnée au formulaire
+        print(campagne_id)
         form = CampagneUtilisateurForm(request.user, selected_campagne.id, request.GET)
         if form.is_valid():
             selected_campagne = form.cleaned_data['campagne']
