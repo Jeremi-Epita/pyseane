@@ -1,4 +1,5 @@
 from django import forms
+from .models import campagne_fish
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(
@@ -39,3 +40,19 @@ class CampagneForm(forms.Form):
         required=True,
         widget=forms.URLInput(attrs={'class': 'form-control form-control-lg'})
     )
+    
+class CampagneUtilisateurForm(forms.Form):
+    def __init__(self, utilisateur, selected_campagne_id, *args, **kwargs):
+        super(CampagneUtilisateurForm, self).__init__(*args, **kwargs)
+        campagnes = campagne_fish.objects.filter(utilisateur=utilisateur)
+        
+        self.fields['campagne'] = forms.ModelChoiceField(
+            queryset=campagnes,
+            empty_label=None,
+            widget=forms.Select(attrs={'onchange': 'this.form.submit();'}),
+            initial=selected_campagne_id
+        )
+
+
+
+

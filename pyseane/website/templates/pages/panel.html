@@ -107,15 +107,24 @@
     <p>Nom: {{ selected_campagne.nom }}</p>
     <p>Autres détails...</p>
 {% endif %}
-    </div>
-</div>
+<h2>Panel utilisateur</h2>
 
+<form method="get" action="">
+    {{ form.as_p }}
+</form>
 <script>
     // Toggle sidebar on burger menu click
     document.querySelector('.burger-menu').addEventListener('click', function() {
         document.querySelector('.sidebar').classList.toggle('show-sidebar');
     });
 </script>
+    </div>
+</div>
+
+
+<!-- Affichez les détails de l'utilisateur et de la campagne actuelle ici -->
+
+
 
 </body>
 </html>

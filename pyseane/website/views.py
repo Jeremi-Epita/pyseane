@@ -6,6 +6,10 @@ from django.db import IntegrityError
 from .models import Pyseane_User, campagne_fish
 from .forms import RegistrationForm, LoginForm, CampagneForm
 from .module.Pywebcloner import clone
+from .forms import CampagneUtilisateurForm
+from django.contrib.auth.decorators import login_required
+
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -104,17 +108,26 @@ def detail_campagne(request, id):
     else:
         return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
 
+@login_required
 def panel(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
-
-        #TODO add trycatch pour invalid uuid
-
+        
+        # Récupérer la campagne actuellement sélectionnée
         if campagne_id != "null":
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
-            response = redirect("/panel")
+            response = redirect("panel")
+            response.set_cookie('campagne_id', str(selected_campagne.id))
+            return response
+
+        # Passer l'ID de la campagne actuellement sélectionnée au formulaire
+        form = CampagneUtilisateurForm(request.user, selected_campagne.id, request.GET, initial={'campagne': selected_campagne.id})
+        
+        if form.is_valid():
+            selected_campagne = form.cleaned_data['campagne']
+            response = redirect("panel")
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
 
@@ -122,13 +135,17 @@ def panel(request):
             'username': request.user.username,
             'email': request.user.email,
             'selected_campagne': selected_campagne,
+            'form': form,
         }
+
         if request.user.username == selected_campagne.utilisateur.username:
             return render(request, 'pages/panel.html', context)
         else:
             return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:
         return redirect(home)
+
+
 
 def email(request):
     if request.user.is_authenticated:
