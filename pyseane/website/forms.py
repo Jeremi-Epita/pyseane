@@ -57,8 +57,3 @@ class CampagneUtilisateurForm(forms.Form):
             empty_label=selected_camp.nom,  # Ajouter cette ligne
             widget=forms.Select(attrs={'onchange': 'this.form.submit();'}),
         )
-
-
-
-
-

@@ -13,8 +13,6 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email
         campagnes = campagne_fish.objects.filter(utilisateur=request.user)
         if campagnes:
             return redirect(panel)
@@ -113,25 +111,26 @@ def detail_campagne(request, id):
 def panel(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
-        print(campagne_id)
+
         # Récupérer la campagne actuellement sélectionnée
-        if campagne_id != "null":
-            selected_campagne = campagne_fish.objects.get(id=campagne_id)
-        else:
+        if campagne_id == "null":
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
-            response = redirect("panel")
-            response.set_cookie('campagne_id', str(selected_campagne.id))
-            return response
+            if selected_campagne:
+                response = redirect("panel")
+                response.set_cookie('campagne_id', str(selected_campagne.id))
+                return response
 
-        # Passer l'ID de la campagne actuellement sélectionnée au formulaire
-        print(campagne_id)
-        form = CampagneUtilisateurForm(request.user, selected_campagne.id, request.GET)
-        if form.is_valid():
-            selected_campagne = form.cleaned_data['campagne']
-            response = redirect("panel")
-            response.set_cookie('campagne_id', str(selected_campagne.id))
-            return response
-
+        if 'campagne' in request.GET:
+            form = CampagneUtilisateurForm(request.user, campagne_id, request.GET)
+            if form.is_valid():
+                selected_campagne = form.cleaned_data['campagne']
+                response = redirect("panel")
+                response.set_cookie('campagne_id', str(selected_campagne.id))
+                return response
+        else:
+            # Le formulaire n'est pas soumis, initialisez-le sans données
+            form = CampagneUtilisateurForm(request.user, campagne_id)
+        selected_campagne = campagne_fish.objects.get(id=campagne_id)
         context = {
             'username': request.user.username,
             'email': request.user.email,
