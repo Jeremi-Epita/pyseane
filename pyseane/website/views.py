@@ -119,9 +119,6 @@ def detail_campagne(request, id):
                     ma_target.has_read = True
                     ma_target.has_open = True
                     ma_target.save()
-                else: # PERMET DE DEBUG en resetant
-                   ma_target.has_open = False
-                   ma_target.save()
             except Exception:
               return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
         return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
@@ -131,9 +128,6 @@ def detail_campagne(request, id):
             ma_target = target.objects.get(id_email_uuid=target_id)
             if not ma_target.has_logged:
                 ma_target.has_logged = True
-                ma_target.save()
-            else:  # PERMET DE DEBUG en resetant
-                ma_target.has_logged = False
                 ma_target.save()
         except Exception:
             return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
