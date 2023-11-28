@@ -200,6 +200,11 @@
         text-align: center;
         margin-bottom: 5%;
     }
+
+    .h3-pourcentage {
+    margin-top: 5%;  /* Ajustez la valeur selon vos besoins */
+    }
+
     @media screen and (max-width: 768px) {
         .sidebar-open,
         .sidebar-open + .content {
@@ -275,19 +280,19 @@
                 <tr>
                     <td>
                             <i class="fas fa-user"></i>
-                            <span class="data-number">100</span>
+                            <span class="data-number">{{nb_target}}</span>
                     </td>
                     <td>        
                             <i class="fas fa-envelope"></i>
-                            <span class="data-number">50</span>
+                            <span class="data-number">{{nb_target_has_read}}</span>
                     </td>
                     <td>
                             <i class="fas fa-link"></i>
-                            <span class="data-number">35</span>
+                            <span class="data-number">{{nb_target_has_open}}</span>
                     </td>
                     <td>
                             <i class="fas fa-user-lock"></i>
-                            <span class="data-number">25</span>
+                            <span class="data-number">{{nb_target_has_logged}}</span>
                     </td>
                 </tr>
                 <!-- Ajoutez d'autres lignes si nécessaire -->
@@ -302,24 +307,27 @@
                 <div class="chart-container">
                     <!-- Camembert 1 -->
                     <div class="chart">
-                        <h3>Camembert 1</h3>
+                        <h3>Ratio total / Mail lu</h3>
                         <div class="chart-content">
                             <canvas id="campagnesChart1"></canvas>
                         </div>
+                        <h3 class="h3-pourcentage">Pourcentage : {{pourcentage_1}}%</h3>
                     </div>
                     <!-- Camembert 2 -->
                     <div class="chart">
-                        <h3>Camembert 2</h3>
+                        <h3>Ratio Mail lu / lien cliqué</h3>
                         <div class="chart-content">
                             <canvas id="campagnesChart2"></canvas>
                         </div>
+                        <h3 class="h3-pourcentage">Pourcentage : {{pourcentage_2}}%</h3>
                     </div>
                     <!-- Camembert 3 -->
                     <div class="chart">
-                        <h3>Camembert 3</h3>
+                        <h3>Ratio lien cliqué / user loggé</h3>
                         <div class="chart-content">
                             <canvas id="campagnesChart3"></canvas>
                         </div>
+                        <h3 class="h3-pourcentage">Pourcentage : {{pourcentage_3}}%</h3>
                     </div>
                 </div>
             </div>
@@ -332,11 +340,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Données pour le graphique 1 (à remplacer par vos propres données)
             var data1 = [
-                { label: 'User open mail', count: 50 },
-                { label: 'User open link', count: 35 },
-                { label: 'User post credentials', count: 25 }
+                { label: 'User dont read', count: 0 + {{nb_target}} - {{nb_target_has_read}} },
+                { label: 'User open link', count: {{nb_target_has_read}} },
             ];
     
             var ctx1 = document.getElementById('campagnesChart1').getContext('2d');
@@ -374,9 +380,8 @@
     
             // Données pour le graphique 2 (à remplacer par vos propres données)
             var data2 = [
-                { label: 'Category A', count: 30 },
-                { label: 'Category B', count: 45 },
-                { label: 'Category C', count: 25 }
+                { label: 'User has read', count: {{nb_target_has_read}}-{{nb_target_has_read}} },
+                { label: 'User has open', count: {{nb_target_has_open}} },
             ];
     
             var ctx2 = document.getElementById('campagnesChart2').getContext('2d');
@@ -414,9 +419,8 @@
     
             // Données pour le graphique 3 (à remplacer par vos propres données)
             var data3 = [
-                { label: 'User open mail', count: 50 },
-                { label: 'User open link', count: 35 },
-                { label: 'User post credentials', count: 25 }
+                { label: 'User open mail', count: {{nb_target_has_open}}-{{nb_target_has_logged}} },
+                { label: 'User open link', count: {{nb_target_has_logged}} },
             ];
     
             var ctx3 = document.getElementById('campagnesChart3').getContext('2d');

@@ -108,18 +108,7 @@
   <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <label for="id_Name">Mail Name:</label><br>
-    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required><br>
-
-    <label for="id_receiver">Receiver:</label><br>
-    <textarea id="id_receiver" name="receiver" rows="5" cols="33" required>{{ form.receiver.value }}</textarea><br>
-
-    <label for="id_subject">Subject:</label><br>
-    <input type="text" id="id_subject" name="subject" value="{{ form.subject.value }}" required><br>
-
-    <label for="id_content">Content:</label><br>
-    <textarea id="id_content" name="content" rows="5" cols="33" required>{{ form.content.value }}</textarea><br>
-
+    {{ form.as_p }}
     <button type="submit">Submit</button>
   </form>
 {% endblock %}
