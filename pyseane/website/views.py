@@ -1,11 +1,14 @@
+import hashlib
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from .models import Pyseane_User, campagne_fish
+from .models import Pyseane_User, campagne_fish,target
 from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
+from .module.Emailsender import EmailSender
 from .forms import CampagneUtilisateurForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
@@ -102,7 +105,20 @@ def campagne_register(request):
     return HttpResponse("Méthode non supportée.", status=405)
 
 def detail_campagne(request, id):
+    target_id = request.GET.get('follow')
     campagnes = campagne_fish.objects.get(id=id)
+
+    if target_id:
+        try:
+            ma_target = target.objects.get(id_email_hashed=target_id)
+            if not ma_target.has_open:
+                ma_target.has_open = True
+                ma_target.save()
+            else: # PERMET DE DEBUG en resetant
+                ma_target.has_open = False
+                ma_target.save()
+        except Exception:
+            return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
     return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
 
 
@@ -152,6 +168,7 @@ def email(request):
         if campagne_id != "null":
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
+            #TODO forcer user a choisir la campagne
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
             response = redirect("/panel/email")
             response.set_cookie('campagne_id', str(selected_campagne.id))
@@ -160,27 +177,30 @@ def email(request):
         if request.method == 'POST':
             form = EmailForm(request.POST)
             if form.is_valid():
-
-                #TODO traiter le form ici
                 name = form.cleaned_data['name']
-                receiver = form.cleaned_data['receiver']
+                receiver = form.cleaned_data['receiver'].replace('\r', '').split('\n')
                 subject = form.cleaned_data['subject']
                 content = form.cleaned_data['content']
-                if 'profile_picture' in request.FILES:
-                    profile_picture = request.FILES['profile_picture']
-                else:
-                    profile_picture = None
-                print("DEBUG", name, receiver, subject, content, profile_picture)
 
+                #sended = EmailSender(name, receiver, subject, content)
 
+                # TODO passer le lien vers la campgne + ?follow+ hash du mail
+                sended = receiver
+                for c in sended:
+                    nouvelle_target = target.objects.create(
+                    id_email_hashed=hashlib.sha256(c.encode()).hexdigest(),
+                    campagne=selected_campagne,
+                    )
+                    nouvelle_target.save()
                 return redirect(email)
         else:
             form = EmailForm()
-
+        targets_for_campagne = target.objects.filter(campagne=selected_campagne)
         context = {
             'username': request.user.username,
             'email': request.user.email,
             'selected_campagne': selected_campagne,
+            'targets_for_campagne': targets_for_campagne,
             'form': form,  # Ajoutez le formulaire au contexte
         }
 

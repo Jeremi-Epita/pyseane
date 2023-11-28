@@ -108,11 +108,7 @@
   <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
 
-
-      <label for="id_profile_picture">Photo de profile:</label><br>
-<input type="file" id="id_profile_picture" name="profile_picture" accept="image/*"><br>
-
-    <label for="id_name">Mail Name:</label><br>
+    <label for="id_Name">Mail Name:</label><br>
     <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required><br>
 
     <label for="id_receiver">Receiver:</label><br>
@@ -127,6 +123,11 @@
     <button type="submit">Submit</button>
   </form>
 {% endblock %}
+
+        {% for target_instance in targets_for_campagne %}
+    {{ target_instance.id_email_hashed }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
+{% endfor %}
+
     </div>
 </div>
 
