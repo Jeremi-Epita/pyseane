@@ -182,10 +182,8 @@ def email(request):
                 subject = form.cleaned_data['subject']
                 content = form.cleaned_data['content']
 
-                #sended = EmailSender(name, receiver, subject, content)
+                sended = EmailSender(str(selected_campagne.id), name, receiver, subject, content)
 
-                # TODO passer le lien vers la campgne + ?follow+ hash du mail
-                sended = receiver
                 for c in sended:
                     nouvelle_target = target.objects.create(
                     id_email_hashed=hashlib.sha256(c.encode()).hexdigest(),
