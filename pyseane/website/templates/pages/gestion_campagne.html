@@ -270,10 +270,8 @@
             <p>Adresse e-mail : {{ email }}</p>
             <h1>Liste des campagnes :</h1>
             <ul>
-                {% for campagne in campagnes %}
-                <li>Nom : {{ campagne.nom }} | Page clonée : {{ campagne.url }} | <a href="/campagnes/{{ campagne.id }}">lien vers la page</a></li>
-                <iframe width="600" height="400" src="/campagnes/{{campagne.id}}" frameborder="0"></iframe>
-                {% endfor %}
+                <li>Nom : {{ selected_campagne.nom }} | Page clonée : {{ selected_campagne.url }} | <a href="/campagnes/{{ selected_campagne.id }}">lien vers la page</a></li>
+                <iframe width="600" height="400" src="/campagnes/{{selected_campagne.id}}" frameborder="0"></iframe>
             </ul>
         </div>
     </div>

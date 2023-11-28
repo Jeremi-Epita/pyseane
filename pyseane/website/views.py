@@ -148,7 +148,6 @@ def panel(request):
                 response.set_cookie('campagne_id', str(selected_campagne.id))
                 return response
         else:
-            # Le formulaire n'est pas soumis, initialisez-le sans données
             form = CampagneUtilisateurForm(request.user, campagne_id)
         selected_campagne = campagne_fish.objects.get(id=campagne_id)
         context = {
@@ -226,13 +225,12 @@ def gestion_campagne(request):
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
 
-        all_campagne = campagne_fish.objects.filter(utilisateur=request.user)
         form = CampagneUtilisateurForm(request.user, campagne_id)
         context = {
             'username': request.user.username,
             'email': request.user.email,
-            'campagnes': all_campagne,
-            'form': form
+            'selected_campagne': selected_campagne,
+            'form': form,
         }
         if request.user.username == selected_campagne.utilisateur.username:
             return render(request, 'pages/gestion_campagne.html', context)
