@@ -192,7 +192,8 @@
             <li class="nav-item">
                 {% if selected_campagne %}  
                 <form method="get" action="">
-                    {{ form.as_p }}            
+                    {{ form.as_p }}
+                </form>            
                 {% endif %}
             </li>
           </ul>
@@ -214,6 +215,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>User total</th>
                     <th>User open mail</th>
                     <th>User open link</th>
                     <th>User post credentials</th>
@@ -221,6 +223,12 @@
             </thead>
             <tbody>
                 <tr>
+                    <td>
+                        <div class="compartment">
+                            <i class="fas fa-user"></i>
+                            <span class="data-number">100</span>
+                        </div>
+                    </td>
                     <td>
                         <div class="compartment">
                             <i class="fas fa-envelope"></i>
@@ -312,7 +320,7 @@
             });
         });
     </script>
-
+    <script>
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('sidebar-open');
         }
