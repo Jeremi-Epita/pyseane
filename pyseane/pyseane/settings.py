@@ -39,7 +39,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Application definition
 
 INSTALLED_APPS = [

@@ -105,8 +105,12 @@
 {% block content %}
   <h2>Email personnalisation</h2>
 
-  <form method="post" action="">
+  <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
+
+
+      <label for="id_profile_picture">Photo de profile:</label><br>
+<input type="file" id="id_profile_picture" name="profile_picture" accept="image/*"><br>
 
     <label for="id_name">Mail Name:</label><br>
     <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required><br>

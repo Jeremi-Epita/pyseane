@@ -105,6 +105,7 @@
         <ul>
     {% for campagne in campagnes %}
       <li>Nom : {{ campagne.nom }} | Page clonée : {{ campagne.url }} | <a href="/campagnes/{{ campagne.id }}">lien vers la page</a></li>
+            <iframe width="600" height="400" src="/campagnes/{{campagne.id}}" frameborder="0"></iframe>
     {% endfor %}
   </ul>
     </div>
