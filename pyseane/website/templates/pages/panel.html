@@ -148,22 +148,14 @@
         margin-top: 20px; /* Ajustez la marge supérieure selon vos besoins */
     }
     
-    .compartment {
-        text-align: center;
-        padding: 20px;  
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px; /* Ajustez la marge inférieure selon vos besoins */
-    }
-    
-    .compartment i {
-        font-size: 200%;
+    .data-table td i {
+        font-size: 4vw;
         margin-bottom: 2.5%;
+        
     }
     
     .data-number {
-        font-size: 100%;
+        font-size: 125%;
         font-weight: bold;
     }
 
@@ -179,6 +171,7 @@
         padding: 0.8%;
         text-align: center;
         border: 1px solid #ddd;
+        background-color: #5F5959;
     }
 
     .data-table th {
@@ -280,28 +273,20 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="compartment">
                             <i class="fas fa-user"></i>
                             <span class="data-number">100</span>
-                        </div>
                     </td>
-                    <td>
-                        <div class="compartment">                 
+                    <td>        
                             <i class="fas fa-envelope"></i>
                             <span class="data-number">50</span>
-                        </div>
                     </td>
                     <td>
-                        <div class="compartment">
                             <i class="fas fa-link"></i>
                             <span class="data-number">35</span>
-                        </div>
                     </td>
                     <td>
-                        <div class="compartment">
                             <i class="fas fa-user-lock"></i>
                             <span class="data-number">25</span>
-                        </div>
                     </td>
                 </tr>
                 <!-- Ajoutez d'autres lignes si nécessaire -->
@@ -491,7 +476,7 @@
             if (ratio) {
                 var button = document.querySelector('.open-btn');
                 if (button) {
-                    button.style.fontSize = 1.8 * ratio + 'vw';
+                    button.style.fontSize = 2 * ratio + 'vw';
                 }
             }
         }
