@@ -60,6 +60,7 @@ class CampagneUtilisateurForm(forms.Form):
                 'style': 'font-size: 16px; height: 38px; width: 200px;',  # Ajouter des styles personnalisés
                 'onchange': 'this.form.submit();',
             }),
+            label=''
         )
 
 
