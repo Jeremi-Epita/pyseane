@@ -76,11 +76,10 @@
         padding: 16px;
         margin-left: 0;
         margin-top: 10%;
-        position: fixed;
+        position: relative; /* Modification de 'fixed' à 'relative' */
         width: 100%;
-        height: 100%;
-        overflow-y: auto;
-    }
+        overflow-y: scroll;
+    }   
     
     .open-btn {
         font-size: 40px;
@@ -173,6 +172,27 @@
         background-color: #333;
         color: white;
     }
+
+    /* Nouveau style pour les camemberts */
+    .chart-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start; /* Alignez les camemberts en haut */
+        flex-wrap: wrap;
+        margin-top: 20px;
+        overflow-y: auto; /* Ajout de cette ligne pour activer le défilement vertical si nécessaire */
+    }
+    
+    .chart {
+        width: 30%; /* Ajustez la largeur selon vos besoins */
+        margin-bottom: 20px;
+        flex-shrink: 0; /* Empêche le rétrécissement des camemberts */
+    }
+    
+    .chart h3 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -252,62 +272,67 @@
             </tbody>
         </table>
         <div class="dashboard-container">
-            <h2>Bienvenue, {{ username }} !</h2>
+            <h2>Panel utilisateur</h2>
             {% if selected_campagne %}
-                <p>Votre campagne: {{ selected_campagne.nom }}</p>
-                <h3>Vos Campagnes :</h3>
-                <form method="get" action="">
-                    {{ form.as_p }}            
-                </form>
+                <p>Votre suivie de campagne {{ selected_campagne.nom }}</p>
             {% endif %}
-            <h2>Panel utilisateur</h2> <!-- Déplacé ici -->
-            
             <div style="margin-bottom: 50px;">
-                <canvas id="campagnesChart"></canvas>
+                <div class="chart-container">
+                    <!-- Camembert 1 -->
+                    <div class="chart">
+                        <h3>Camembert 1</h3>
+                        <div class="chart-content">
+                            <canvas id="campagnesChart1"></canvas>
+                        </div>
+                    </div>
+                    <!-- Camembert 2 -->
+                    <div class="chart">
+                        <h3>Camembert 2</h3>
+                        <div class="chart-content">
+                            <canvas id="campagnesChart2"></canvas>
+                        </div>
+                    </div>
+                    <!-- Camembert 3 -->
+                    <div class="chart">
+                        <h3>Camembert 3</h3>
+                        <div class="chart-content">
+                            <canvas id="campagnesChart3"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Données pour le graphique (à remplacer par vos propres données)
-            var data = [
+        document.addEventListener('DOMContentLoaded', function () {
+            // Données pour le graphique 1 (à remplacer par vos propres données)
+            var data1 = [
                 { label: 'User open mail', count: 50 },
                 { label: 'User open link', count: 35 },
-                { label: 'User post credentials', count: 25 },
-                // ... Ajoutez les données pour d'autres catégories si nécessaire
+                { label: 'User post credentials', count: 25 }
             ];
     
-            var ctx = document.getElementById('campagnesChart').getContext('2d');
-    
-            var labels = data.map(function(item) {
-                return item.label;
-            });
-    
-            var values = data.map(function(item) {
-                return item.count;
-            });
-    
-            var chart = new Chart(ctx, {
-                type: 'pie', // Utiliser 'pie' pour un graphique en camembert
+            var ctx1 = document.getElementById('campagnesChart1').getContext('2d');
+            var chart1 = new Chart(ctx1, {
+                type: 'pie',
                 data: {
-                    labels: labels,
+                    labels: data1.map(item => item.label),
                     datasets: [{
-                        data: values,
+                        data: data1.map(item => item.count),
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',  // Rouge
-                            'rgba(54, 162, 235, 0.6)', // Bleu
-                            'rgba(255, 206, 86, 0.6)', // Jaune
-                            // ... Ajoutez des couleurs pour d'autres catégories
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
-                            // ...
                         ],
                         borderWidth: 1
                     }]
@@ -315,10 +340,96 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    // Ajouter d'autres options si nécessaire
-                }
+                    plugins: {
+                        datalabels: {
+                            display: true,
+                            align: 'start', // 'start' aligne les légendes au début du camembert
+                            anchor: 'end', // 'end' les place en dessous du camembert
+                        }
+                    }
+                }    
             });
-        });
+    
+            // Données pour le graphique 2 (à remplacer par vos propres données)
+            var data2 = [
+                { label: 'Category A', count: 30 },
+                { label: 'Category B', count: 45 },
+                { label: 'Category C', count: 25 }
+            ];
+    
+            var ctx2 = document.getElementById('campagnesChart2').getContext('2d');
+            var chart2 = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: data2.map(item => item.label),
+                    datasets: [{
+                        data: data2.map(item => item.count),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            display: true,
+                            align: 'start', // 'start' aligne les légendes au début du camembert
+                            anchor: 'end', // 'end' les place en dessous du camembert
+                        }
+                    }
+                }    
+            });
+    
+            // Données pour le graphique 3 (à remplacer par vos propres données)
+            var data3 = [
+                { label: 'User open mail', count: 50 },
+                { label: 'User open link', count: 35 },
+                { label: 'User post credentials', count: 25 }
+            ];
+    
+            var ctx3 = document.getElementById('campagnesChart3').getContext('2d');
+            var chart3 = new Chart(ctx3, {
+                type: 'pie',
+                data: {
+                    labels: data3.map(item => item.label),
+                    datasets: [{
+                        data: data3.map(item => item.count),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            display: true,
+                            align: 'start', // 'start' aligne les légendes au début du camembert
+                            anchor: 'end', // 'end' les place en dessous du camembert
+                        }
+                    }
+                }    
+            });
+        })
     </script>
     <script>
         function toggleSidebar() {
