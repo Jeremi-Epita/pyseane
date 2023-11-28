@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import Pyseane_User, campagne_fish,target
 from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
@@ -104,22 +106,26 @@ def campagne_register(request):
 
     return HttpResponse("Méthode non supportée.", status=405)
 
+@csrf_exempt
 def detail_campagne(request, id):
     target_id = request.GET.get('follow')
     campagnes = campagne_fish.objects.get(id=id)
+    if request.method == 'GET':
+        if target_id:
+            try:
+                ma_target = target.objects.get(id_email_hashed=target_id)
+                if not ma_target.has_open:
+                    ma_target.has_open = True
+                    ma_target.save()
+                else: # PERMET DE DEBUG en resetant
+                   ma_target.has_open = False
+                   ma_target.save()
+            except Exception:
+              return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
+        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
 
-    if target_id:
-        try:
-            ma_target = target.objects.get(id_email_hashed=target_id)
-            if not ma_target.has_open:
-                ma_target.has_open = True
-                ma_target.save()
-            else: # PERMET DE DEBUG en resetant
-                ma_target.has_open = False
-                ma_target.save()
-        except Exception:
-            return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
-    return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
+    elif request.method == 'POST':
+        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
 
 
 def panel(request):
@@ -221,10 +227,12 @@ def gestion_campagne(request):
             return response
 
         all_campagne = campagne_fish.objects.filter(utilisateur=request.user)
+        form = CampagneUtilisateurForm(request.user, campagne_id)
         context = {
             'username': request.user.username,
             'email': request.user.email,
-            'campagnes': all_campagne
+            'campagnes': all_campagne,
+            'form': form
         }
         if request.user.username == selected_campagne.utilisateur.username:
             return render(request, 'pages/gestion_campagne.html', context)
