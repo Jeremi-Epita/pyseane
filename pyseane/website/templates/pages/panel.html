@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
   <style>
     body {
       background: linear-gradient(to right, #ff0000, #000000);
@@ -13,18 +15,98 @@
       font-family: 'Arial', sans-serif;
       color: #fff;
     }
-
     .navbar {
-      background-color: #333; /* Couleur de fond de la barre de menu */
+        background-color: #333;
+        padding: 10px 0;
+        color: white;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 10002; /* Pour s'assurer que la barre de navigation est au-dessus de la barre latérale */
+        margin-bottom: 60px; /* Ajout de cette ligne pour créer de l'espace en dessous de la barre de navigation */
     }
-
-    .navbar-nav .nav-link {
-      color: #fff; /* Couleur du texte dans la barre de menu */
+    
+    .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
     }
-
+    
+    .container {
+        display: flex;
+        flex-direction: column; /* Ajout de cette ligne pour aligner les compartiments verticalement */
+    }
+    
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #333;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10002; /* Pour s'assurer que la barre latérale est au-dessus du contenu */
+    }
+    
+    .sidebar a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidebar a:hover {
+        color: #f1f1f1;
+    }
+    
+    .sidebar .close-btn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    
+    .content {
+        transition: margin-left 0.5s;
+        padding: 16px;
+        margin-left: 0;
+        margin-top: 10%;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+    
+    .open-btn {
+        font-size: 40px;
+        cursor: pointer;
+        border: none;
+        background: none;
+        color: #f1f1f1;
+        padding: 1%;
+        position: fixed;
+        left: 1%;
+        top: 1%;  /* Modifiez cette valeur pour ajuster la position verticale */
+        z-index: 10003; /* Pour s'assurer que le bouton de la barre latérale est au-dessus de tout */
+    }
+    
+    .sidebar-open {
+        width: 250px;
+    }
+    
+    .sidebar-open + .content {
+        margin-left: 250px;
+    }
+    
     .dashboard-container {
-      max-width: 800px;
+      width: 80%; /* Ajustez la largeur selon vos besoins */
       margin: 50px auto;
+      margin-bottom: 15%;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -44,108 +126,193 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    .nav-item {
+        margin-right : 5%;
+    }
+    .line-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px; /* Ajustez la marge supérieure selon vos besoins */
+    }
+    
+    .compartment {
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; /* Ajustez la marge inférieure selon vos besoins */
+    }
+    
+    .compartment i {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .data-number {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    /* Nouveau style pour le tableau */
+    .data-table {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+    .data-table th, .data-table td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .data-table th {
+        background-color: #333;
+        color: white;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-</head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">Tableau de Bord</a>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#" style="margin-left : 10px"></a>
+        <button class="open-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="navbar-brand mx-auto">
+            <h1 class="my-0" style="margin: 375%">Pyseane</h1>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <li class="centered-link">
+            <li class="nav-item">
+                {% if selected_campagne %}  
                 <form method="get" action="">
-                    {{ form.as_p }}
-              </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/panel">Dashboard</a>
-              </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/panel/email">Email</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/panel/campagnes">Campagne</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">déconnexion</a>
+                    {{ form.as_p }}            
+                {% endif %}
             </li>
           </ul>
         </div>
-      </nav>
-      <div class="container">
+    </nav>
+
+    <div class="sidebar">
+        <a href="#" class="close-btn" onclick="toggleSidebar()">&#9665;</a>
+        <ul>
+            <li><a href="/panel">Dashboard</a></li>
+            <li><a href="/panel/email">Email</a></li>
+            <li><a href="/panel/campagnes">Campagnes</a></li>
+            <!-- ... Autres éléments de la barre latérale ... -->
+            <li><a href="/logout">déconnexion</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Colonne 1</th>
+                    <th>Colonne 2</th>
+                    <th>Colonne 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Donnée 1</td>
+                    <td>Donnée 2</td>
+                    <td>Donnée 3</td>
+                </tr>
+                <!-- Ajoutez d'autres lignes de données si nécessaire -->
+            </tbody>
+        </table>
+
+        <div class="line-container">
+            <div class="compartment">
+                <i class="fas fa-chart-bar"></i>
+                <span class="data-number">25</span>
+            </div>
+            <div class="compartment">
+                <i class="fas fa-user"></i>
+                <span class="data-number">50</span>
+            </div>
+            <!-- Ajoutez d'autres compartiments selon vos besoins -->
+        </div>
+        
         <div class="dashboard-container">
             <h2>Bienvenue, {{ username }} !</h2>
             {% if selected_campagne %}
-            <p>Votre campagne: {{ selected_campagne.nom }}</p>
-            <h3>Vos Campagnes :</h3>
-            <form method="get" action="">
-                {{ form.as_p }}            
+                <p>Votre campagne: {{ selected_campagne.nom }}</p>
+                <h3>Vos Campagnes :</h3>
+                <form method="get" action="">
+                    {{ form.as_p }}            
+                </form>
             {% endif %}
+            <h2>Panel utilisateur</h2> <!-- Déplacé ici -->
+            
+            <div style="margin-bottom: 50px;">
+                <canvas id="campagnesChart"></canvas>
+            </div>
         </div>
     </div>
 
-<h2>Panel utilisateur</h2>
-<div style="width: 80%; margin: auto;">
-    <canvas id="campagnesChart"></canvas>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Données pour le graphique (à remplacer par vos propres données)
-        var data = [
-            { month: 'Janvier', count: 10 },
-            { month: 'Février', count: 20 },
-            { month: 'Mars', count: 15 },
-            // ... Ajoutez les données pour les autres mois
-        ];
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Données pour le graphique (à remplacer par vos propres données)
+            var data = [
+                { month: 'Janvier', count: 10 },
+                { month: 'Février', count: 20 },
+                { month: 'Mars', count: 15 },
+                // ... Ajoutez les données pour les autres mois
+            ];
 
-        var ctx = document.getElementById('campagnesChart').getContext('2d');
+            var ctx = document.getElementById('campagnesChart').getContext('2d');
 
-        var labels = data.map(function(item) {
-            return item.month;
+            var labels = data.map(function(item) {
+                return item.month;
+            });
+
+            var values = data.map(function(item) {
+                return item.count;
+            });
+
+            var chart = new Chart(ctx, {
+                type: 'pie', // Utiliser 'pie' pour un graphique en camembert
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',  // Rouge
+                            'rgba(54, 162, 235, 0.6)', // Bleu
+                            'rgba(255, 206, 86, 0.6)', // Jaune
+                            // ... Ajoutez des couleurs pour d'autres mois
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            // ...
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    // Ajouter d'autres options si nécessaire
+                }
+            });
         });
 
-        var values = data.map(function(item) {
-            return item.count;
-        });
-
-        var chart = new Chart(ctx, {
-            type: 'pie', // Utiliser 'pie' pour un graphique en camembert
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',  // Rouge
-                        'rgba(54, 162, 235, 0.6)', // Bleu
-                        'rgba(255, 206, 86, 0.6)', // Jaune
-                        // ... Ajoutez des couleurs pour d'autres mois
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        // ...
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                // Ajouter d'autres options si nécessaire
-            }
-        });
-    });
-</script>
-
-
-<!-- Affichez les détails de l'utilisateur et de la campagne actuelle ici -->
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('sidebar-open');
+        }
+    </script>
 </body>
 </html>
