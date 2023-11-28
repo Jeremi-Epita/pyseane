@@ -161,11 +161,18 @@ def email(request):
             form = EmailForm(request.POST)
             if form.is_valid():
 
-                # Traitez les données du formulaire ici
-                # Vous pouvez accéder aux données du formulaire avec form.cleaned_data
-                # Par exemple, form.cleaned_data['name'], form.cleaned_data['receiver'], etc.
+                #TODO traiter le form ici
+                name = form.cleaned_data['name']
+                receiver = form.cleaned_data['receiver']
+                subject = form.cleaned_data['subject']
+                content = form.cleaned_data['content']
+                if 'profile_picture' in request.FILES:
+                    profile_picture = request.FILES['profile_picture']
+                else:
+                    profile_picture = None
+                print("DEBUG", name, receiver, subject, content, profile_picture)
 
-                # Redirigez ou effectuez d'autres actions après le traitement du formulaire
+
                 return redirect(email)
         else:
             form = EmailForm()
