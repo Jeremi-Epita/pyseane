@@ -214,33 +214,35 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Colonne 1</th>
-                    <th>Colonne 2</th>
-                    <th>Colonne 3</th>
+                    <th>User open mail</th>
+                    <th>User open link</th>
+                    <th>User post credentials</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Donnée 1</td>
-                    <td>Donnée 2</td>
-                    <td>Donnée 3</td>
+                    <td>
+                        <div class="compartment">
+                            <i class="fas fa-envelope"></i>
+                            <span class="data-number">50</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="compartment">
+                            <i class="fas fa-link"></i>
+                            <span class="data-number">35</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="compartment">
+                            <i class="fas fa-user-lock"></i>
+                            <span class="data-number">25</span>
+                        </div>
+                    </td>
                 </tr>
-                <!-- Ajoutez d'autres lignes de données si nécessaire -->
+                <!-- Ajoutez d'autres lignes si nécessaire -->
             </tbody>
         </table>
-
-        <div class="line-container">
-            <div class="compartment">
-                <i class="fas fa-chart-bar"></i>
-                <span class="data-number">25</span>
-            </div>
-            <div class="compartment">
-                <i class="fas fa-user"></i>
-                <span class="data-number">50</span>
-            </div>
-            <!-- Ajoutez d'autres compartiments selon vos besoins -->
-        </div>
-        
         <div class="dashboard-container">
             <h2>Bienvenue, {{ username }} !</h2>
             {% if selected_campagne %}
@@ -265,22 +267,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Données pour le graphique (à remplacer par vos propres données)
             var data = [
-                { month: 'Janvier', count: 10 },
-                { month: 'Février', count: 20 },
-                { month: 'Mars', count: 15 },
-                // ... Ajoutez les données pour les autres mois
+                { label: 'User open mail', count: 50 },
+                { label: 'User open link', count: 35 },
+                { label: 'User post credentials', count: 25 },
+                // ... Ajoutez les données pour d'autres catégories si nécessaire
             ];
-
+    
             var ctx = document.getElementById('campagnesChart').getContext('2d');
-
+    
             var labels = data.map(function(item) {
-                return item.month;
+                return item.label;
             });
-
+    
             var values = data.map(function(item) {
                 return item.count;
             });
-
+    
             var chart = new Chart(ctx, {
                 type: 'pie', // Utiliser 'pie' pour un graphique en camembert
                 data: {
@@ -291,7 +293,7 @@
                             'rgba(255, 99, 132, 0.6)',  // Rouge
                             'rgba(54, 162, 235, 0.6)', // Bleu
                             'rgba(255, 206, 86, 0.6)', // Jaune
-                            // ... Ajoutez des couleurs pour d'autres mois
+                            // ... Ajoutez des couleurs pour d'autres catégories
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
@@ -309,6 +311,7 @@
                 }
             });
         });
+    </script>
 
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('sidebar-open');
