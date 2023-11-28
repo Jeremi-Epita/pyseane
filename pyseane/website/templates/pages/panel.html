@@ -16,7 +16,7 @@
         
         .navbar {
             background-color: #333;
-            padding: 1.5% 0; /* Converti de pixels en pourcentage */
+            padding: 1.5% 0.5%; /* Converti de pixels en pourcentage */
             color: white;
             position: fixed;
             width: 100%;
@@ -54,7 +54,7 @@
         .sidebar a {
             padding: 1% 1% 1% 4%; /* Converti de pixels en pourcentage */
             text-decoration: none;
-            font-size: 1.5vw; /* Ajusté pour être relatif à la largeur de la vue */
+            font-size: 1.2vw; /* Ajusté pour être relatif à la largeur de la vue */
             color: #818181;
             display: block;
             transition: 0.3s;
@@ -67,9 +67,13 @@
         .sidebar .close-btn {
             position: absolute;
             top: 0;
-            right: 2.5%; /* Converti de pixels en pourcentage */
-            font-size: 4vw; /* Ajusté pour être relatif à la largeur de la vue */
-            margin-left: 5%;
+            right: 2%; /* Converti de pixels en pourcentage */
+            font-size: 3vw; /* Ajusté pour être relatif à la largeur de la vue */
+            margin-left: 1%;
+        }
+
+        .dashboard-page .sidebar a {
+            font-size: 150%; /* Taille spécifique pour la page du tableau de bord */
         }
         
         .content {
@@ -193,13 +197,26 @@
         text-align: center;
         margin-bottom: 5%;
     }
+    @media screen and (max-width: 768px) {
+        .sidebar-open,
+        .sidebar-open + .content {
+            width: 100%; /* Ajustement pour les écrans plus petits */
+            margin-left: 0; /* Ajustement pour les écrans plus petits */
+        }
+    
+        .dashboard-container {
+            width: 90%; /* Ajustement pour les écrans plus petits */
+        }
+    
+        /* Ajoutez d'autres ajustements si nécessaire */
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="dashboard-page">
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <a class="navbar-brand" href="#" style="margin-left : 10px"></a>
+        <a class="navbar-brand" href="#" style="margin-left : 1%"></a>
         <button class="open-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -208,7 +225,7 @@
             <h1 class="my-0" style="margin: 375%">Pyseane</h1>
         </div>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto" style="margin-right:5%; padding-top:1%;">
             <li class="nav-item">
                 {% if selected_campagne %}  
                 <form method="get" action="">
@@ -223,7 +240,7 @@
     <div class="sidebar">
         <a href="#" class="close-btn" onclick="toggleSidebar()">&#9665;</a>
         <ul class="list-unstyled">
-            <li><a href="/panel">Dashboard</a></li>
+            <li><a href="/panel"    >Dashboard</a></li>
             <li><a href="/panel/email">Email</a></li>
             <li><a href="/panel/campagnes">Campagnes</a></li>
             <!-- ... Autres éléments de la barre latérale ... -->
