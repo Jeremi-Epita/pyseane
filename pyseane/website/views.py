@@ -1,4 +1,4 @@
-import hashlib
+import uuid
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -109,11 +109,12 @@ def campagne_register(request):
 @csrf_exempt
 def detail_campagne(request, id):
     target_id = request.GET.get('follow')
+
     campagnes = campagne_fish.objects.get(id=id)
     if request.method == 'GET':
         if target_id:
             try:
-                ma_target = target.objects.get(id_email_hashed=target_id)
+                ma_target = target.objects.get(id_email_uuid=target_id)
                 if not ma_target.has_open:
                     ma_target.has_open = True
                     ma_target.save()
@@ -125,6 +126,16 @@ def detail_campagne(request, id):
         return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
 
     elif request.method == 'POST':
+        try:
+            ma_target = target.objects.get(id_email_uuid=target_id)
+            if not ma_target.has_logged:
+                ma_target.has_logged = True
+                ma_target.save()
+            else:  # PERMET DE DEBUG en resetant
+                ma_target.has_logged = False
+                ma_target.save()
+        except Exception:
+            return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
         return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
 
 
@@ -189,9 +200,9 @@ def email(request):
 
                 sended = EmailSender(str(selected_campagne.id), name, receiver, subject, content)
 
-                for c in sended:
+                for id in sended:
                     nouvelle_target = target.objects.create(
-                    id_email_hashed=hashlib.sha256(c.encode()).hexdigest(),
+                    id_email_uuid=id,
                     campagne=selected_campagne,
                     )
                     nouvelle_target.save()

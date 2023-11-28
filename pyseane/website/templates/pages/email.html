@@ -124,9 +124,13 @@
   </form>
 {% endblock %}
 
-        {% for target_instance in targets_for_campagne %}
-    {{ target_instance.id_email_hashed }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
-{% endfor %}
+        {% if targets_for_campagne %}
+    {% for target_instance in targets_for_campagne %}
+        {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
+    {% endfor %}
+{% else %}
+    <p>Aucune cible n'est disponible pour cette campagne.</p>
+{% endif %}
 
     </div>
 </div>

@@ -33,13 +33,13 @@ class campagne_fish(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     utilisateur = models.ForeignKey(Pyseane_User, on_delete=models.CASCADE)
     nom = models.CharField(max_length=100,null=True)
-    url = models.CharField(max_length=100,null=True)
+    url = models.CharField(max_length=512,null=True)
 
     def __str__(self):
         return self.nom
 
 class target(models.Model):
-    id_email_hashed = models.CharField(primary_key=True, max_length=65)
+    id_email_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     campagne = models.ForeignKey(campagne_fish, on_delete=models.CASCADE)
     has_read = models.BooleanField(default=False)
     has_open = models.BooleanField(default=False)
