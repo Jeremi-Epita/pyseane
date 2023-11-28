@@ -225,7 +225,15 @@ def gestion_campagne(request):
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
 
-        form = CampagneUtilisateurForm(request.user, campagne_id)
+        if 'campagne' in request.GET:
+            form = CampagneUtilisateurForm(request.user, campagne_id, request.GET)
+            if form.is_valid():
+                selected_campagne = form.cleaned_data['campagne']
+                response = redirect(gestion_campagne)
+                response.set_cookie('campagne_id', str(selected_campagne.id))
+                return response
+        else:
+            form = CampagneUtilisateurForm(request.user, campagne_id)
         context = {
             'username': request.user.username,
             'email': request.user.email,
