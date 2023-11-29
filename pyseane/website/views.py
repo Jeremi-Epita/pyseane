@@ -116,11 +116,9 @@ def detail_campagne(request, id):
             try:
                 ma_target = target.objects.get(id_email_uuid=target_id)
                 if not ma_target.has_open:
+                    ma_target.has_read = True
                     ma_target.has_open = True
                     ma_target.save()
-                else: # PERMET DE DEBUG en resetant
-                   ma_target.has_open = False
-                   ma_target.save()
             except Exception:
               return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
         return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
@@ -130,9 +128,6 @@ def detail_campagne(request, id):
             ma_target = target.objects.get(id_email_uuid=target_id)
             if not ma_target.has_logged:
                 ma_target.has_logged = True
-                ma_target.save()
-            else:  # PERMET DE DEBUG en resetant
-                ma_target.has_logged = False
                 ma_target.save()
         except Exception:
             return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
@@ -161,12 +156,38 @@ def panel(request):
         else:
             form = CampagneUtilisateurForm(request.user, campagne_id)
         selected_campagne = campagne_fish.objects.get(id=campagne_id)
+
+        nb_tar = target.objects.filter(campagne=selected_campagne).count()
+        nb_tar_has_open = target.objects.filter(campagne=selected_campagne, has_open=True).count()
+        nb_tar_has_read = target.objects.filter(campagne=selected_campagne, has_read=True).count()
+        nb_tar_has_logged = target.objects.filter(campagne=selected_campagne, has_logged=True).count()
+
+        if int(nb_tar) != 0:
+            pourcentage_1 = int((int(nb_tar_has_read)/int(nb_tar) )*100)
+        else:
+            pourcentage_1 = 0
+        if int(nb_tar_has_read) != 0:
+            pourcentage_2 = int((int(nb_tar_has_open) / int(nb_tar_has_read)) * 100)
+        else:
+            pourcentage_2 = 0
+        if int(nb_tar_has_open) != 0:
+            pourcentage_3 = int((int(nb_tar_has_logged) / int(nb_tar_has_open)) * 100)
+        else:
+            pourcentage_3 = 0
+
         context = {
             'username': request.user.username,
             'email': request.user.email,
             'selected_campagne': selected_campagne,
             'form': form,
-            'all_campagnes' : campagne_fish.objects.filter(utilisateur=request.user)
+            'all_campagnes' : campagne_fish.objects.filter(utilisateur=request.user),
+            'nb_target' : nb_tar,
+            'nb_target_has_read': nb_tar_has_read,
+            'nb_target_has_open': nb_tar_has_open,
+            'nb_target_has_logged': nb_tar_has_logged,
+            'pourcentage_1' : pourcentage_1,
+            'pourcentage_2': pourcentage_2,
+            'pourcentage_3': pourcentage_3,
         }
 
         if request.user.username == selected_campagne.utilisateur.username:
