@@ -201,15 +201,23 @@ def panel(request):
 def email(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
-
         if campagne_id != "null":
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
-            #TODO forcer user a choisir la campagne
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
             response = redirect("/panel/email")
             response.set_cookie('campagne_id', str(selected_campagne.id))
             return response
+
+        if 'campagne' in request.GET:
+            form_menu = CampagneUtilisateurForm(request.user, campagne_id, request.GET)
+            if form_menu.is_valid():
+                selected_campagne = form_menu.cleaned_data['campagne']
+                response = redirect(email)
+                response.set_cookie('campagne_id', str(selected_campagne.id))
+                return response
+        else:
+            form_menu = CampagneUtilisateurForm(request.user, campagne_id)
 
         if request.method == 'POST':
             print("ok")
@@ -241,12 +249,14 @@ def email(request):
         else:
             form = EmailForm()
         targets_for_campagne = target.objects.filter(campagne=selected_campagne)
+
         context = {
             'username': request.user.username,
             'email': request.user.email,
             'selected_campagne': selected_campagne,
             'targets_for_campagne': targets_for_campagne,
             'form': form,  # Ajoutez le formulaire au contexte
+            'form_menu': form_menu,
         }
 
         if request.user.username == selected_campagne.utilisateur.username:
