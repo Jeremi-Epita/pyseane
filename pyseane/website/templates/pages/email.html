@@ -181,7 +181,18 @@
             border-radius: 10px;
             text-align: left;
         }
-
+        
+        .receiver-form{
+            resize: vertical;
+            height: 20vw;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 5%;
+            margin-top: 1%;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
         .template-dropdown {
                 height: 3vw; /* Ajustez la hauteur selon vos besoins */
                 width: 40%; /* Occupera toute la largeur disponible */
@@ -306,14 +317,14 @@
                         <h4 style="margin-bottom: 0%;">{{ form.mailtype.label }} </h4>
                         {{ form.mailtype }}
                         <h4 style="margin-top: 7%;">{{ form.name.label }}</h4>
-                        <textarea class="form-control name-form" style="margin-top: 2%;" name="subject" id="id_subject" required> {{ form.name.value }} </textarea>
+                        <textarea class="form-control name-form" style="margin-top: 2%;" name="name" id="id_name" required> {{ form.name.value }} </textarea>
                         <h4 style="margin-top: 7%;">{{ form.receiver.label}}</h4>
-                        <textarea class="content-form" style="margin-top: 2%;" name="content" id="id_content" required> {{ form.receiver.value }}</textarea>
+                        <textarea class="content-form receiver-form" style="margin-top: 2%;" name="receiver" id="id_receiver" required> {{ form.receiver.value }}</textarea>
                         <div display="none" id="own_mail">
                             <h5>{{ form.mail.label }}</h5>
-                            <textarea class="form-control name-form" name="subject" id="id_subject" required> {{ form.mail.value }} </textarea>
+                            <textarea class="form-control name-form" name="mail" id="id_mail" required> {{ form.mail.value }} </textarea>
                             <h5>{{ form.password.label }}</h5>
-                            <textarea class="form-control name-form" name="subject" id="id_subject" required> {{ form.password.value }} </textarea>
+                            <textarea class="form-control name-form" name="password" id="id_password" required> {{ form.password.value }} </textarea>
                         </div>
                     </form>
                 </div>
