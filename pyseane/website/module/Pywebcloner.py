@@ -29,7 +29,6 @@ def clone(uuid,url):
 
     for formulaire in formulaires:
         # Modifier ou remplacer le champ "action"
-        
         formulaire['action'] = ""
 
     # Afficher le HTML modifié
@@ -38,6 +37,7 @@ def clone(uuid,url):
     fichier = open("./website/templates/pages/pages_fishing/"+str(uuid)+".html", "w", encoding="utf-8")
     fichier.write(page_content)
     fichier.close()
+    return True
 
 
 

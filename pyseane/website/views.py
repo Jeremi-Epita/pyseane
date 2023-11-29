@@ -1,10 +1,6 @@
-import uuid
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Pyseane_User, campagne_fish, target
@@ -12,8 +8,6 @@ from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
 from .module.Emailsender import TryConnection, EmailSender
 from .forms import CampagneUtilisateurForm
-from django.contrib.auth.decorators import login_required
-from django.db.models import Count
 
 
 def home(request):
@@ -28,7 +22,15 @@ def home(request):
 
 
 def cgu(request):
-    return render(request, 'pages/cgu.html')
+    if request.method == 'GET':
+        return render(request, 'pages/cgu.html')
+    else:
+        return HttpResponse("Méthode non supportée.", status=405)
+
+
+def contexteMessage(msg, color, form):
+    context = {'message': msg, 'color': color, 'form': form}
+    return context
 
 
 def register(request):
@@ -44,25 +46,36 @@ def register(request):
             accept_terms = form.cleaned_data['accept_terms']
 
             if len(username) < 3 or len(password) < 8:
-                return HttpResponse(
-                    "Le nom d'utilisateur doit comporter au moins 3 caractères et le mot de passe au moins 8 caractères.",
-                    status=400)
+                message = "Le nom d'utilisateur doit comporter au moins 3 caractères et le mot de passe au moins 8 caractères."
+                color = "red"
+                context = contexteMessage(message, color, form)
+                status = 400
             elif accept_terms != True:
-                return HttpResponse("Vous devez accepter les Conditions Générales d'Utilisation.", status=403)
+                message = "Vous devez accepter les Conditions Générales d'Utilisation."
+                color = "red"
+                context = contexteMessage(message, color, form)
+                status = 400
             else:
                 Pyseane_User.objects.create_user(username=username, email=email, password=password)
+                message = "Inscription réussie ! Connectez-vous avec votre nouveau compte."
+                color = "green"
                 # TODO  faire un trycatch pour les erreurs
-                if not request.session.get('success_message_displayed', False):
-                    messages.success(request, 'Inscription réussie ! Connectez-vous avec votre nouveau compte.')
-                    request.session['success_message_displayed'] = True
-                return render(request, 'pages/register.html', {'form': form})
-
+                context = contexteMessage(message, color, form)
+                status = 201
+            return render(request, 'pages/register.html', context, status=status)
+        else:
+            redirect(register)
     else:
         return HttpResponse("Méthode non supportée.", status=405)
 
 
 def login_user(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect(home)
+    elif request.method == 'GET':
+        form = LoginForm()
+        return render(request, 'pages/login.html', {'form': form})
+    elif request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -76,12 +89,6 @@ def login_user(request):
                 return response
             else:
                 form.add_error(None, 'Nom d\'utilisateur ou mot de passe incorrect.')
-    elif request.user.is_authenticated:
-        return redirect(home)
-    else:
-        form = LoginForm()
-
-    return render(request, 'pages/login.html', {'form': form})
 
 
 def logout_user(request):
@@ -91,39 +98,42 @@ def logout_user(request):
 
 
 def campagne_register(request):
-    if request.method == 'GET':
-        form = CampagneForm()
-        return render(request, 'pages/campagne.html', {'form': form})
-    elif request.method == 'POST':
-        form = CampagneForm(data=request.POST)
-        if form.is_valid():
-            nom_campagne = form.cleaned_data.get('name')
-            url_campagne = form.cleaned_data.get('url')
-            nouvelle_campagne = campagne_fish.objects.create(
-                utilisateur=request.user,
-                nom=nom_campagne,
-                url=url_campagne
-            )
-            # TODO verifier si la campagne existe deja ? pas obligatoire
-            nouvelle_campagne.save()
-            clone(nouvelle_campagne.id, url_campagne)
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            form = CampagneForm()
+            return render(request, 'pages/campagne.html', {'form': form})
+        elif request.method == 'POST':
+            form = CampagneForm(data=request.POST)
+            if form.is_valid():
+                nom_campagne = form.cleaned_data.get('name')
+                url_campagne = form.cleaned_data.get('url')
+                nouvelle_campagne = campagne_fish.objects.create(
+                    utilisateur=request.user,
+                    nom=nom_campagne,
+                    url=url_campagne
+                )
 
-            return redirect(panel)
-
-    return HttpResponse("Méthode non supportée.", status=405)
+                res = clone(nouvelle_campagne.id, url_campagne)
+                if res:
+                    # TODO trycatch ici
+                    nouvelle_campagne.save()
+                return redirect(panel)
+        return HttpResponse("Méthode non supportée.", status=405)
+    else:
+        redirect(home)
 
 
 @csrf_exempt
 def detail_campagne(request, id):
     target_id = request.GET.get('follow')
-
     campagnes = campagne_fish.objects.get(id=id)
+
     if request.method == 'GET':
         if target_id:
             try:
                 ma_target = target.objects.get(id_email_uuid=target_id)
                 if not ma_target.has_open:
-                    ma_target.has_read = True
+                    ma_target.has_read = True  # TODO trouver un moyen de faire du suivie de mail
                     ma_target.has_open = True
                     ma_target.save()
             except Exception:
@@ -139,6 +149,8 @@ def detail_campagne(request, id):
         except Exception:
             return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
         return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
+    else:
+        return HttpResponse("Méthode non supportée.", status=405)
 
 
 def panel(request):
@@ -152,6 +164,8 @@ def panel(request):
                 response = redirect("panel")
                 response.set_cookie('campagne_id', str(selected_campagne.id))
                 return response
+            else:
+                redirect(campagne_register)
 
         if 'campagne' in request.GET:
             form = CampagneUtilisateurForm(request.user, campagne_id, request.GET)
@@ -162,6 +176,7 @@ def panel(request):
                 return response
         else:
             form = CampagneUtilisateurForm(request.user, campagne_id)
+
         selected_campagne = campagne_fish.objects.get(id=campagne_id)
 
         nb_tar = target.objects.filter(campagne=selected_campagne).count()
@@ -209,6 +224,7 @@ def email(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
         if campagne_id != "null":
+            # TODO try catch pour gerer si id invalide
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
@@ -277,7 +293,9 @@ def email(request):
 def gestion_campagne(request):
     if request.user.is_authenticated:
         campagne_id = request.COOKIES.get('campagne_id', 'null')
+
         if campagne_id != "null":
+            # TODO try catch pour gerer si id invalide
             selected_campagne = campagne_fish.objects.get(id=campagne_id)
         else:
             selected_campagne = campagne_fish.objects.filter(utilisateur=request.user).first()
@@ -294,6 +312,7 @@ def gestion_campagne(request):
                 return response
         else:
             form = CampagneUtilisateurForm(request.user, campagne_id)
+
         context = {
             'username': request.user.username,
             'email': request.user.email,
