@@ -107,19 +107,18 @@
 
   <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <label for="id_Name">Mail Name:</label><br>
-    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required><br>
-
-    <label for="id_receiver">Receiver:</label><br>
-    <textarea id="id_receiver" name="receiver" rows="5" cols="33" required>{{ form.receiver.value }}</textarea><br>
-
-    <label for="id_subject">Subject:</label><br>
-    <input type="text" id="id_subject" name="subject" value="{{ form.subject.value }}" required><br>
-
-    <label for="id_content">Content:</label><br>
-    <textarea id="id_content" name="content" rows="5" cols="33" required>{{ form.content.value }}</textarea><br>
-
+    <h3>{{ form.mailtype.label }} </h3>
+    <p> {{ form.mailtype }} </p>
+    <p> {{ form.name.label }} <br> {{ form.name }} </p>
+    <div id="own_mail" display="none">
+        <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
+        <p> {{ form.password.label }} <br> {{ form.password }} </p>
+    </div>
+    <h3>Mail information</h3>
+    <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
+    <p> {{ form.template.label }} <br> {{ form.template }} </p>
+    <p> {{ form.subject.label }} <br> {{ form.subject }} </p>
+    <p> {{ form.content.label }} <br> {{ form.content }} </p>
     <button type="submit">Submit</button>
   </form>
 {% endblock %}
@@ -139,6 +138,36 @@
     // Toggle sidebar on burger menu click
     document.querySelector('.burger-menu').addEventListener('click', function() {
         document.querySelector('.sidebar').classList.toggle('show-sidebar');
+    });
+
+    //Display Email Password asking for personal mail
+    document.querySelector('#own_mail').style.display = "none";
+    document.querySelector('#id_mailtype').addEventListener('change', function() {
+        if (document.querySelector('#id_mailtype').value !== "0") 
+        {
+            document.querySelector('#own_mail').style.display = "none";
+        }
+        else {
+            document.querySelector('#own_mail').style.display = "block";
+        }
+    });
+
+    //Template example
+    let template = [
+        {
+            "SUBJECT": "",
+            "CONTENT": ""
+        },
+        {
+            "SUBJECT": "Votre prélèvement n'a pas abouti",
+            "CONTENT": "Nous rencontrons des difficultés à toucher votre paiement Netflix. Pour conserver votre accès à Netflix, veuillez prendre quelques instants pour vérifier vos données de paiement.\n\nNous vous prions de bien vouloir mettre à jour et confirmer vos informations de paiement avant le 02/12/2023. A défaut, vos accès sera malencontreusement bloqué jusqu'à paiement de votre part.\n\nPlusieurs causes peuvent mener à ce problème. Si vos coordonnées de paiement sont exactes, une authentification additionnelle de votre banque pourrait être nécessaire. Pour y remédier, [[connectez vous à votre compte]]."
+        }
+    ]
+
+    document.querySelector('#id_template').addEventListener('change', function() {
+        let number = parseInt(document.querySelector('#id_template').value);
+        document.querySelector('#id_subject').value = template[number]["SUBJECT"];
+        document.querySelector('#id_content').value = template[number]["CONTENT"];
     });
 </script>
 

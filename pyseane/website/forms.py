@@ -65,7 +65,20 @@ class CampagneUtilisateurForm(forms.Form):
 
 
 class EmailForm(forms.Form):
+    MAIL_TYPE_CHOICES = [
+        ("1", "qYdDfdgYKEUZcc@outlook.fr"),
+        ("0", "Mon propre email")
+        ]
+    CONTENT_TEMPLATE = [
+        ("0", "Mon propre texte"),
+        ("1", "Netflix")
+    ]
+    mailtype = forms.CharField(label='Email expedition', widget=forms.Select(choices=MAIL_TYPE_CHOICES))
+    mail = forms.CharField(label='Mail', required=False, max_length=100)
+    password = forms.CharField(label='Password', required=False, max_length=100, widget=forms.PasswordInput)
     name = forms.CharField(label='Name', max_length=100, required=True, initial='')
     receiver = forms.CharField(label='Receiver', widget=forms.Textarea, required=True, initial='')
+    template = forms.CharField(label='Mail template', widget=forms.Select(choices=CONTENT_TEMPLATE))
+
     subject = forms.CharField(label='Subject', max_length=100, required=True, initial='')
     content = forms.CharField(label='Content', widget=forms.Textarea, required=True, initial='')
