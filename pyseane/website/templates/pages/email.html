@@ -132,6 +132,7 @@
             display: flex;
             justify-content: space-between;
             align-items: stretch;
+            text-align: left;
         }
 
         .col-md-4,
@@ -155,7 +156,9 @@
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 5%;
-            margin-top: 2%;
+            margin-top: 1%;
+            border-radius: 10px;
+            text-align: left;
         }
         .subject-form{
             resize: vertical;
@@ -164,22 +167,50 @@
             box-sizing: border-box;
             margin-bottom: 5%;
             margin-top: 2%;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .name-form{
+            resize: vertical;
+            height: 4vw;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 5%;
+            margin-top: 2%;
+            border-radius: 10px;
+            text-align: left;
         }
 
         .template-dropdown {
-                height: 4vw; /* Ajustez la hauteur selon vos besoins */
+                height: 3vw; /* Ajustez la hauteur selon vos besoins */
                 width: 40%; /* Occupera toute la largeur disponible */
                 box-sizing: border-box; /* Ajuste la boîte pour inclure le padding dans la largeur/hauteur */
                 overflow-y: auto; /* Ajoute une barre de défilement si nécessaire */
+                margin-bottom: 5%;
+                margin-top: 2%;
+                border-radius: 10px;
         }
-
-        h4{
+        .form-control{
+            margin-left: 0%;
+        }
+        h3{
+            padding-bottom: 2%;
             text-align: center;
-            margin-top: 2%;
+        }
+        h4{
+            text-align: left;
+            margin-left: 3%;
+            margin-top: 1%;
+            font-size: 125%;
+        }
+        
+        .form-mailtype{
+            width: 100%;
         }
         .row-divider {
             border-right: 2px solid #ffffff;
-            padding-right: 1%;
+            padding-right: 2%;
             box-sizing: border-box;
         }
 
@@ -203,6 +234,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-left: 5%;
+            margin-top: 0%;
           }
       
           .btn-submit:hover {
@@ -219,11 +252,6 @@
             margin-right: 5%;
         }
 
-        .line-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -270,18 +298,22 @@
     <div class="dashboard-container">
         {% block content %}
         <div class="row">
-            <div class="col-md-5 row-divider">
+            <div class="col-md-5 row-divider" style="padding-top: 0;">
                 <div>
-                    <h2>Email personnalisation</h2>
+                    <h3 style="margin-bottom: 5%;">Email personnalisation</h3>
                     <form action="" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
-                        <h3>{{ form.mailtype.label }} </h3>
-                        <p> {{ form.mailtype }} </p>
-                        <p> {{ form.name.label }} <br> {{ form.name }} </p>
-                        <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
+                        <h4 style="margin-bottom: 0%;">{{ form.mailtype.label }} </h4>
+                        {{ form.mailtype }}
+                        <h4 style="margin-top: 7%;">{{ form.name.label }}</h4>
+                        <textarea class="form-control name-form" style="margin-top: 2%;" name="subject" id="id_subject" required> {{ form.name.value }} </textarea>
+                        <h4 style="margin-top: 7%;">{{ form.receiver.label}}</h4>
+                        <textarea class="content-form" style="margin-top: 2%;" name="content" id="id_content" required> {{ form.receiver.value }}</textarea>
                         <div display="none" id="own_mail">
-                            <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
-                            <p> {{ form.password.label }} <br> {{ form.password }} </p>
+                            <h5>{{ form.mail.label }}</h5>
+                            <textarea class="form-control name-form" name="subject" id="id_subject" required> {{ form.mail.value }} </textarea>
+                            <h5>{{ form.password.label }}</h5>
+                            <textarea class="form-control name-form" name="subject" id="id_subject" required> {{ form.password.value }} </textarea>
                         </div>
                     </form>
                 </div>
@@ -294,13 +326,14 @@
                         <h4>{{ form.template.label }}</h4>
                         {{ form.template }}
                         <h4>{{ form.subject.label }}</h4>
-                        <textarea class="subject-form" name="subject" id="id_subject" required> {{ form.subject.value }} </textarea>
+                        <textarea class="form-control subject-form" name="subject" id="id_subject" required> {{ form.subject.value }} </textarea>
                         <h4>{{ form.content.label}}</h4>
                         <textarea class="content-form" name="content" id="id_content" required> {{ form.content.value }}</textarea>
-                        <button type="submit" class="btn btn-submit">Submit</button>
+                        
                     </form>
                 </div>
             </div>
+            <button type="submit" class="btn btn-submit">Submit</button>
         </div>
         {% endblock %}
 
