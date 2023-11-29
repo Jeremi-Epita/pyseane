@@ -163,7 +163,7 @@
         .subject-form{
             resize: vertical;
             height: 4vw;
-            width: 70%;
+            width: 100%;
             box-sizing: border-box;
             margin-bottom: 5%;
             margin-top: 2%;
@@ -309,52 +309,50 @@
     <div class="dashboard-container">
         {% block content %}
         <div class="row">
-            <div class="col-md-5 row-divider" style="padding-top: 0;">
-                <div>
-                    <h3 style="margin-bottom: 5%;">Email personnalisation</h3>
-                    <form action="" enctype="multipart/form-data" method="post">
-                        {% csrf_token %}
-                        <h4 style="margin-bottom: 0%;">{{ form.mailtype.label }} </h4>
-                        {{ form.mailtype }}
-                        <h4 style="margin-top: 7%;">{{ form.name.label }}</h4>
-                        <textarea class="form-control name-form" style="margin-top: 2%;" name="name" id="id_name" required> {{ form.name.value }} </textarea>
-                        <h4 style="margin-top: 7%;">{{ form.receiver.label}}</h4>
-                        <textarea class="content-form receiver-form" style="margin-top: 2%;" name="receiver" id="id_receiver" required> {{ form.receiver.value }}</textarea>
-                        <div display="none" id="own_mail">
-                            <h5>{{ form.mail.label }}</h5>
-                            <textarea class="form-control name-form" name="mail" id="id_mail" required> {{ form.mail.value }} </textarea>
-                            <h5>{{ form.password.label }}</h5>
-                            <textarea class="form-control name-form" name="password" id="id_password" required> {{ form.password.value }} </textarea>
-                        </div>
-                    </form>
+                <div class="col-md-5 row-divider" style="padding-top: 0;">
+                    <div>
+                        <h3 style="margin-bottom: 5%;">Email personnalisation</h3>
+                        <form action="" enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                            <h4 style="margin-bottom: 0%;">{{ form.mailtype.label }} </h4>
+                            {{ form.mailtype }}
+                            <h4 style="margin-top: 7%;">{{ form.name.label }}</h4>
+                            {{ form.name }}
+                            <h4 style="margin-top: 7%;">{{ form.receiver.label}}</h4>
+                            {{ form.receiver }}
+                            <div display="none" id="own_mail">
+                                <h5>{{ form.mail.label }}</h5>
+                                {{ form.mail}}
+                                <h5>{{ form.password.label }}</h5>
+                            {{ form.password }}
+                            </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-7">
-                <div>
-                    <h3>Mail information</h3>
-                    <form action="" enctype="multipart/form-data" method="post">
-                        {% csrf_token %}
-                        <h4>{{ form.template.label }}</h4>
-                        {{ form.template }}
-                        <h4>{{ form.subject.label }}</h4>
-                        <textarea class="form-control subject-form" name="subject" id="id_subject" required> {{ form.subject.value }} </textarea>
-                        <h4>{{ form.content.label}}</h4>
-                        <textarea class="content-form" name="content" id="id_content" required> {{ form.content.value }}</textarea>
+                <div class="col-md-7">
+                    <div>
+                        <h3>Mail information</h3>
+                            {% csrf_token %}
+                            <h4>{{ form.template.label }}</h4>
+                            {{ form.template }}
+                            <h4>{{ form.subject.label }}</h4>
+                        {{ form.subject }}
+                            <h4>{{ form.content.label}}</h4>
+                            {{ form.content }}                      
                         
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-submit">Submit</button>
+                <button type="submit" class="btn btn-submit">Submit</button>
+            </form>
         </div>
         {% endblock %}
 
-        {% if targets_for_campagne %}
+       <!-- {% if targets_for_campagne %}
         {% for target_instance in targets_for_campagne %}
         {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
         {% endfor %}
         {% else %}
         <p>Aucune cible n'est disponible pour cette campagne.</p>
-        {% endif %}
+        {% endif %}-->
     </div>
 </div>
 
