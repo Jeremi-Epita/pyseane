@@ -222,6 +222,7 @@
         margin-right: 1%;
     }
 
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -311,6 +312,17 @@
             document.querySelector('.sidebar').classList.toggle('sidebar-open');
         }
 
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var clearOnClickElements = document.getElementsByClassName('clear-on-click');
+
+        for (var i = 0; i < clearOnClickElements.length; i++) {
+            clearOnClickElements[i].addEventListener('click', function() {
+                this.value = ''; // Efface le texte lorsque l'utilisateur clique dans le champ
+            });
+        }
+    });
+
     //Display Email Password asking for personal mail
     document.querySelector('#own_mail').style.display = "none";
     document.querySelector('#id_mailtype').addEventListener('change', function() {
@@ -340,6 +352,7 @@
         document.querySelector('#id_subject').value = template[number]["SUBJECT"];
         document.querySelector('#id_content').value = template[number]["CONTENT"];
     });
+
 </script>
 <script>
         function detectZoom() {
@@ -367,6 +380,7 @@
 
         window.onload = detectZoom;
         window.onresize = detectZoom;
+
 
 </script>
 </body>
