@@ -307,10 +307,39 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-        function toggleSidebar() {
+    function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('sidebar-open');
         }
 
+    //Display Email Password asking for personal mail
+    document.querySelector('#own_mail').style.display = "none";
+    document.querySelector('#id_mailtype').addEventListener('change', function() {
+        if (document.querySelector('#id_mailtype').value !== "0")
+        {
+            document.querySelector('#own_mail').style.display = "none";
+        }
+        else {
+            document.querySelector('#own_mail').style.display = "block";
+        }
+    });
+
+    //Template example
+    let template = [
+        {
+            "SUBJECT": "",
+            "CONTENT": ""
+        },
+        {
+            "SUBJECT": "Votre prélèvement n'a pas abouti",
+            "CONTENT": "Nous rencontrons des difficultés à toucher votre paiement Netflix. Pour conserver votre accès à Netflix, veuillez prendre quelques instants pour vérifier vos données de paiement.\n\nNous vous prions de bien vouloir mettre à jour et confirmer vos informations de paiement avant le 02/12/2023. A défaut, vos accès sera malencontreusement bloqué jusqu'à paiement de votre part.\n\nPlusieurs causes peuvent mener à ce problème. Si vos coordonnées de paiement sont exactes, une authentification additionnelle de votre banque pourrait être nécessaire. Pour y remédier, [[connectez vous à votre compte]]."
+        }
+    ]
+
+    document.querySelector('#id_template').addEventListener('change', function() {
+        let number = parseInt(document.querySelector('#id_template').value);
+        document.querySelector('#id_subject').value = template[number]["SUBJECT"];
+        document.querySelector('#id_content').value = template[number]["CONTENT"];
+    });
 </script>
 <script>
         function detectZoom() {
