@@ -16,7 +16,7 @@
 
         .navbar {
             background-color: #333;
-            padding: 1.5% 0.5%; /* Converti de pixels en pourcentage */
+            padding: 1.5% 0.5%;
             color: white;
             position: fixed;
             width: 100%;
@@ -25,6 +25,7 @@
             margin-bottom: 10%;
             height: 15%;
         }
+
         .navbar-brand {
             display: flex;
             justify-content: center;
@@ -63,9 +64,9 @@
         }
 
         .sidebar a {
-            padding: 1% 1% 1% 4%; /* Converti de pixels en pourcentage */
+            padding: 1% 1% 1% 4%;
             text-decoration: none;
-            font-size: 1.2vw; /* Ajusté pour être relatif à la largeur de la vue */
+            font-size: 1.2vw;
             color: #818181;
             display: block;
             transition: 0.3s;
@@ -78,13 +79,13 @@
         .sidebar .close-btn {
             position: absolute;
             top: 0;
-            right: 2%; /* Converti de pixels en pourcentage */
-            font-size: 3vw; /* Ajusté pour être relatif à la largeur de la vue */
+            right: 2%;
+            font-size: 3vw;
             margin-left: 1%;
         }
 
         .dashboard-page .sidebar a {
-            font-size: 150%; /* Taille spécifique pour la page du tableau de bord */
+            font-size: 150%;
         }
 
         .content {
@@ -109,127 +110,126 @@
         }
 
         .sidebar-open {
-            width: 20%; /* Converti de pixels en pourcentage */
+            width: 20%;
         }
 
         .sidebar-open + .content {
-            margin-left: 20%; /* Converti de pixels en pourcentage */
+            margin-left: 20%;
         }
 
         .dashboard-container {
             width: 80%;
-            margin: 3% auto; /* Converti de pixels en pourcentage */
+            margin: 3% auto;
             margin-bottom: 15%;
             padding: 2%;
-            border-radius: 2vw; /* Ajusté pour être relatif à la largeur de la vue */
-            box-shadow: 0 0 2vw rgba(0, 0, 0, 0.2); /* Ajusté pour être relatif à la largeur de la vue */
+            border-radius: 2vw;
+            box-shadow: 0 0 2vw rgba(0, 0, 0, 0.2);
             background-color: #272727;
             text-align: center;
         }
 
-    .campaign-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .campaign-item {
-      margin-bottom: 10px;
-    }
-    .centered-link {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .nav-item {
-        margin-right : 5%;
-    }
-    .line-container {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 20px; /* Ajustez la marge supérieure selon vos besoins */
-    }
-
-    .data-table td i {
-        font-size: 4vw;
-        margin-bottom: 2.5%;
-
-    }
-
-    .data-number {
-        font-size: 125%;
-        font-weight: bold;
-    }
-
-    /* Nouveau style pour le tableau */
-    .data-table {
-        width: 80%;
-        margin: auto;
-        margin-bottom: 5%;
-        border-collapse: collapse;
-    }
-
-    .data-table th, .data-table td {
-        padding: 0.8%;
-        text-align: center;
-        border: 1px solid #ddd;
-        background-color: #5F5959;
-    }
-
-    .data-table th {
-        background-color: #333;
-        color: white;
-    }
-
-    /* Nouveau style pour les camemberts */
-    .chart-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start; /* Alignez les camemberts en haut */
-        flex-wrap: wrap;
-        margin-top: 5%;
-        overflow-y: auto; /* Ajout de cette ligne pour activer le défilement vertical si nécessaire */
-    }
-
-    .chart {
-        width: 30%; /* Ajustez la largeur selon vos besoins */
-        margin-bottom: 2.5%;
-        flex-shrink: 0; /* Empêche le rétrécissement des camemberts */
-    }
-
-    .chart h3 {
-        text-align: center;
-        margin-bottom: 5%;
-    }
-
-    .h3-pourcentage {
-    margin-top: 5%;  /* Ajustez la valeur selon vos besoins */
-    }
-
-    @media screen and (max-width: 768px) {
-        .sidebar-open,
-        .sidebar-open + .content {
-            width: 100%; /* Ajustement pour les écrans plus petits */
-            margin-left: 0; /* Ajustement pour les écrans plus petits */
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
         }
 
-        .dashboard-container {
-            width: 90%; /* Ajustement pour les écrans plus petits */
+        .col-md-4,
+        .col-md-8 {
+            padding: 1%;
+            box-sizing: border-box;
+            flex: 0 0 48%;
         }
 
-        /* Ajoutez d'autres ajustements si nécessaire */
-    }
-    .open-btn-container {
-        margin-right: 1%;
-    }
+        form {
+            width: 100%;
+        }
 
+        .btn-sub {
+            margin-top: 5%;
+        }
 
+        .content-form {
+            resize: vertical;
+            height: 20vw;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 5%;
+            margin-top: 2%;
+        }
+        .subject-form{
+            resize: vertical;
+            height: 4vw;
+            width: 70%;
+            box-sizing: border-box;
+            margin-bottom: 5%;
+            margin-top: 2%;
+        }
+
+        .template-dropdown {
+                height: 4vw; /* Ajustez la hauteur selon vos besoins */
+                width: 40%; /* Occupera toute la largeur disponible */
+                box-sizing: border-box; /* Ajuste la boîte pour inclure le padding dans la largeur/hauteur */
+                overflow-y: auto; /* Ajoute une barre de défilement si nécessaire */
+        }
+
+        h4{
+            text-align: center;
+            margin-top: 2%;
+        }
+        .row-divider {
+            border-right: 2px solid #ffffff;
+            padding-right: 1%;
+            box-sizing: border-box;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar-open,
+            .sidebar-open + .content {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .dashboard-container {
+                width: 90%;
+            }
+        }
+
+        .btn-submit {
+            width: 30%;
+            padding: 1%; /* Hauteur du bouton de création de campagne */
+            background-color: #5F5959;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+      
+          .btn-submit:hover {
+            background-color: #333; /* Une teinte plus sombre de rouge au survol */
+            color: #5F5959;
+          }
+
+        .centered-link {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-item {
+            margin-right: 5%;
+        }
+
+        .line-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-page">
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="max-width: 100%; margin: 0 auto;">
     <div class="d-flex justify-content-between align-items-center w-100">
-        <!-- Div pour le bouton open-btn -->
         <div class="d-flex align-items-center">
             <a class="navbar-brand" href="#" style="margin-left: 1%"></a>
             <div class="open-btn-container">
@@ -240,11 +240,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <!-- Div pour le titre PYSEANE -->
         <div class="navbar-brand " style="text-align: center; margin-left:10vw">
             <h1 class="my-0">Pyseane</h1>
         </div>
-        <!-- Div pour le formulaire -->
         <div class="collapse navbar-collapse" style="padding-top: 1vw;">
             <ul class="navbar-nav ml-auto" style="margin-right: 1vw;">
                 <li class="nav-item">
@@ -264,7 +262,6 @@
         <li><a href="/panel">Dashboard</a></li>
         <li><a href="/panel/email">Email</a></li>
         <li><a href="/panel/campagnes">Campagnes</a></li>
-        <!-- ... Autres éléments de la barre latérale ... -->
         <li><a href="/logout">déconnexion</a></li>
     </ul>
 </div>
@@ -272,30 +269,44 @@
 <div class="content">
     <div class="dashboard-container">
         {% block content %}
-        <h2>Email personnalisation</h2>
-
-        <form action="" enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            <h3>{{ form.mailtype.label }} </h3>
-            <p> {{ form.mailtype }} </p>
-            <p> {{ form.name.label }} <br> {{ form.name }} </p>
-            <div display="none" id="own_mail">
-                <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
-                <p> {{ form.password.label }} <br> {{ form.password }} </p>
+        <div class="row">
+            <div class="col-md-5 row-divider">
+                <div>
+                    <h2>Email personnalisation</h2>
+                    <form action="" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        <h3>{{ form.mailtype.label }} </h3>
+                        <p> {{ form.mailtype }} </p>
+                        <p> {{ form.name.label }} <br> {{ form.name }} </p>
+                        <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
+                        <div display="none" id="own_mail">
+                            <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
+                            <p> {{ form.password.label }} <br> {{ form.password }} </p>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <h3>Mail information</h3>
-            <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
-            <p> {{ form.template.label }} <br> {{ form.template }} </p>
-            <p> {{ form.subject.label }} <br> {{ form.subject }} </p>
-            <p> {{ form.content.label }} <br> {{ form.content }} </p>
-            <button type="submit">Submit</button>
-        </form>
+            <div class="col-md-7">
+                <div>
+                    <h3>Mail information</h3>
+                    <form action="" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        <h4>{{ form.template.label }}</h4>
+                        {{ form.template }}
+                        <h4>{{ form.subject.label }}</h4>
+                        <textarea class="subject-form" name="subject" id="id_subject" required> {{ form.subject.value }} </textarea>
+                        <h4>{{ form.content.label}}</h4>
+                        <textarea class="content-form" name="content" id="id_content" required> {{ form.content.value }}</textarea>
+                        <button type="submit" class="btn btn-submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% endblock %}
 
         {% if targets_for_campagne %}
         {% for target_instance in targets_for_campagne %}
-        {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{
-        target_instance.has_logged }}</br></br>
+        {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
         {% endfor %}
         {% else %}
         <p>Aucune cible n'est disponible pour cette campagne.</p>
@@ -303,27 +314,26 @@
     </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('sidebar-open');
-        }
-
+        document.querySelector('.sidebar').classList.toggle('sidebar-open');
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         var clearOnClickElements = document.getElementsByClassName('clear-on-click');
 
         for (var i = 0; i < clearOnClickElements.length; i++) {
             clearOnClickElements[i].addEventListener('click', function() {
-                this.value = ''; // Efface le texte lorsque l'utilisateur clique dans le champ
+                this.value = '';
             });
         }
     });
 
-    //Display Email Password asking for personal mail
     document.querySelector('#own_mail').style.display = "none";
     document.querySelector('#id_mailtype').addEventListener('change', function() {
         if (document.querySelector('#id_mailtype').value !== "0")
@@ -335,7 +345,6 @@
         }
     });
 
-    //Template example
     let template = [
         {
             "SUBJECT": "",
@@ -353,34 +362,31 @@
         document.querySelector('#id_content').value = template[number]["CONTENT"];
     });
 
-</script>
-<script>
-        function detectZoom() {
-            var ratio = 0,
-                screen = window.screen,
-                ua = navigator.userAgent.toLowerCase();
+    function detectZoom() {
+        var ratio = 0,
+            screen = window.screen,
+            ua = navigator.userAgent.toLowerCase();
 
-            if (window.devicePixelRatio !== undefined) {
-                ratio = window.devicePixelRatio;
-            } else if (~ua.indexOf('msie')) {
-                if (screen.deviceXDPI && screen.logicalXDPI) {
-                    ratio = screen.deviceXDPI / screen.logicalXDPI;
-                }
-            } else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
-                ratio = window.outerWidth / window.innerWidth;
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        } else if (~ua.indexOf('msie')) {
+            if (screen.deviceXDPI && screen.logicalXDPI) {
+                ratio = screen.deviceXDPI / screen.logicalXDPI;
             }
-
-            if (ratio) {
-                var button = document.querySelector('.open-btn');
-                if (button) {
-                    button.style.fontSize = 2 * ratio + 'vw';
-                }
-            }
+        } else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
         }
 
-        window.onload = detectZoom;
-        window.onresize = detectZoom;
+        if (ratio) {
+            var button = document.querySelector('.open-btn');
+            if (button) {
+                button.style.fontSize = 2 * ratio + 'vw';
+            }
+        }
+    }
 
+    window.onload = detectZoom;
+    window.onresize = detectZoom;
 
 </script>
 </body>

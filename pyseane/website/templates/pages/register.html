@@ -112,7 +112,7 @@
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
-        <p{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; padding-top: 10px;">{{
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; padding-top: 10px;">{{
         message }}</p>
         {% endfor %}
     </div>

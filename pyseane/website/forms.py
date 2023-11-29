@@ -80,7 +80,10 @@ class EmailForm(forms.Form):
     password = forms.CharField(label='Password', required=False, max_length=100, widget=forms.PasswordInput)
     name = forms.CharField(label='Nom à afficher', max_length=100, required=True, initial='')
     receiver = forms.CharField(label='Liste des cibles', widget=forms.Textarea(attrs={'class': 'clear-on-click'}), required=True, initial='Un mail par ligne exemple :\njon.doe@google.fr\nalice.bob@google.fr')
-    template = forms.CharField(label='Mail template', widget=forms.Select(choices=CONTENT_TEMPLATE))
+    template = forms.CharField(
+    label='Mail template',
+    widget=forms.Select(attrs={'class': 'form-control form-control-lg template-dropdown'}, choices=CONTENT_TEMPLATE),
+)
 
     subject = forms.CharField(label='Corps', max_length=100, required=True, initial='')
     content = forms.CharField(label='Contenu', widget=forms.Textarea, required=True, initial='')
