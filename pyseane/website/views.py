@@ -110,9 +110,8 @@ def campagne_register(request):
                 nouvelle_campagne = campagne_fish.objects.create(
                     utilisateur=request.user,
                     nom=nom_campagne,
-                    url=url_campagne
+                    url=url_campagne.split("?")[0]
                 )
-
                 res = clone(nouvelle_campagne.id, url_campagne)
                 if res:
                     # TODO trycatch ici
@@ -165,7 +164,7 @@ def panel(request):
                 response.set_cookie('campagne_id', str(selected_campagne.id))
                 return response
             else:
-                redirect(campagne_register)
+                return redirect(campagne_register)
 
         if 'campagne' in request.GET:
             form = CampagneUtilisateurForm(request.user, campagne_id, request.GET)
