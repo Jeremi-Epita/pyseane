@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Pyseane_User, campagne_fish,target
 from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
-from .module.Emailsender import EmailSender
+from .module.Emailsender import TryConnection, EmailSender
 from .forms import CampagneUtilisateurForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
@@ -212,22 +212,32 @@ def email(request):
             return response
 
         if request.method == 'POST':
+            print("ok")
             form = EmailForm(request.POST)
+
+            print("non ok")
             if form.is_valid():
+                mailtype = form.cleaned_data['mailtype']
+                mail = form.cleaned_data['mail']
+                password = form.cleaned_data['password']
                 name = form.cleaned_data['name']
                 receiver = form.cleaned_data['receiver'].replace('\r', '').split('\n')
                 subject = form.cleaned_data['subject']
                 content = form.cleaned_data['content']
 
-                sended = EmailSender(str(selected_campagne.id), name, receiver, subject, content)
+                server = TryConnection(mailtype, mail, password)
+                if (server != None):
+                    sended = EmailSender(server, str(selected_campagne.id), mailtype, name, receiver, subject, content)
 
-                for id in sended:
-                    nouvelle_target = target.objects.create(
-                    id_email_uuid=id,
-                    campagne=selected_campagne,
-                    )
-                    nouvelle_target.save()
+                    for id in sended:
+                        nouvelle_target = target.objects.create(
+                        id_email_uuid=id,
+                        campagne=selected_campagne,
+                        )
+                        nouvelle_target.save()
                 return redirect(email)
+            
+            print("non valid")
         else:
             form = EmailForm()
         targets_for_campagne = target.objects.filter(campagne=selected_campagne)
