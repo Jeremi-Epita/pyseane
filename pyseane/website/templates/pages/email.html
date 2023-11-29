@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(to right, #ff0000, #000000);
@@ -221,97 +221,98 @@
     .open-btn-container {
         margin-right: 1%;
     }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-page">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="max-width: 100%; margin: 0 auto;">
-        <div class="d-flex justify-content-between align-items-center w-100">
-            <!-- Div pour le bouton open-btn -->
-            <div class="d-flex align-items-center">
-                <a class="navbar-brand" href="#" style="margin-left: 1%"></a>
-                <div class="open-btn-container">
-                    <button class="open-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                </div>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="max-width: 100%; margin: 0 auto;">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <!-- Div pour le bouton open-btn -->
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="#" style="margin-left: 1%"></a>
+            <div class="open-btn-container">
+                <button class="open-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             </div>
-            <!-- Div pour le titre PYSEANE -->
-            <div class="navbar-brand " style="text-align: center; margin-left:10vw">
-                <h1 class="my-0">Pyseane</h1>
-            </div>
-            <!-- Div pour le formulaire -->
-            <div class="collapse navbar-collapse" style="padding-top: 1vw;">
-                <ul class="navbar-nav ml-auto" style="margin-right: 1vw;">
-                    <li class="nav-item">
-                        {% if selected_campagne %}
-                        <form method="get" action="">
-                            {{ form_menu.as_p }}
-                        </form>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler" data-target="#navbarNav" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-    </nav>
-    <div class="sidebar">
-        <a href="#" class="close-btn" onclick="toggleSidebar()">&#9665;</a>
-        <ul class="list-unstyled">
-            <li><a href="/panel">Dashboard</a></li>
-            <li><a href="/panel/email">Email</a></li>
-            <li><a href="/panel/campagnes">Campagnes</a></li>
-            <!-- ... Autres éléments de la barre latérale ... -->
-            <li><a href="/logout">déconnexion</a></li>
-        </ul>
+        <!-- Div pour le titre PYSEANE -->
+        <div class="navbar-brand " style="text-align: center; margin-left:10vw">
+            <h1 class="my-0">Pyseane</h1>
+        </div>
+        <!-- Div pour le formulaire -->
+        <div class="collapse navbar-collapse" style="padding-top: 1vw;">
+            <ul class="navbar-nav ml-auto" style="margin-right: 1vw;">
+                <li class="nav-item">
+                    {% if selected_campagne %}
+                    <form action="" method="get">
+                        {{ form_menu.as_p }}
+                    </form>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
+<div class="sidebar">
+    <a class="close-btn" href="#" onclick="toggleSidebar()">&#9665;</a>
+    <ul class="list-unstyled">
+        <li><a href="/panel">Dashboard</a></li>
+        <li><a href="/panel/email">Email</a></li>
+        <li><a href="/panel/campagnes">Campagnes</a></li>
+        <!-- ... Autres éléments de la barre latérale ... -->
+        <li><a href="/logout">déconnexion</a></li>
+    </ul>
+</div>
 
-    <div class="main-content">
-        <!-- Your main content goes here -->
-        <h1>Bienvenue, {{ username }}!</h1>
-    <p>Adresse e-mail : {{ email }}</p>
+<div class="content">
+    <div class="dashboard-container">
+        {% block content %}
+        <h2>Email personnalisation</h2>
 
-{% block content %}
-  <h2>Email personnalisation</h2>
-
-  <form method="post" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    <h3>{{ form.mailtype.label }} </h3>
-    <p> {{ form.mailtype }} </p>
-    <p> {{ form.name.label }} <br> {{ form.name }} </p>
-    <div id="own_mail" display="none">
-        <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
-        <p> {{ form.password.label }} <br> {{ form.password }} </p>
-    </div>
-    <h3>Mail information</h3>
-    <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
-    <p> {{ form.template.label }} <br> {{ form.template }} </p>
-    <p> {{ form.subject.label }} <br> {{ form.subject }} </p>
-    <p> {{ form.content.label }} <br> {{ form.content }} </p>
-    <button type="submit">Submit</button>
-  </form>
-{% endblock %}
+        <form action="" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <h3>{{ form.mailtype.label }} </h3>
+            <p> {{ form.mailtype }} </p>
+            <p> {{ form.name.label }} <br> {{ form.name }} </p>
+            <div display="none" id="own_mail">
+                <p> {{ form.mail.label }} <br> {{ form.mail }} </p>
+                <p> {{ form.password.label }} <br> {{ form.password }} </p>
+            </div>
+            <h3>Mail information</h3>
+            <p> {{ form.receiver.label }} <br> {{ form.receiver }} </p>
+            <p> {{ form.template.label }} <br> {{ form.template }} </p>
+            <p> {{ form.subject.label }} <br> {{ form.subject }} </p>
+            <p> {{ form.content.label }} <br> {{ form.content }} </p>
+            <button type="submit">Submit</button>
+        </form>
+        {% endblock %}
 
         {% if targets_for_campagne %}
-    {% for target_instance in targets_for_campagne %}
-        {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{ target_instance.has_logged }}</br></br>
-    {% endfor %}
-{% else %}
-    <p>Aucune cible n'est disponible pour cette campagne.</p>
-{% endif %}
-
+        {% for target_instance in targets_for_campagne %}
+        {{ target_instance.id_email_uuid }} - {{ target_instance.has_read }} - {{ target_instance.has_open }} - {{
+        target_instance.has_logged }}</br></br>
+        {% endfor %}
+        {% else %}
+        <p>Aucune cible n'est disponible pour cette campagne.</p>
+        {% endif %}
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('sidebar-open');
         }
-    </script>
-    <script>
+
+</script>
+<script>
         function detectZoom() {
             var ratio = 0,
                 screen = window.screen,
@@ -337,6 +338,7 @@
 
         window.onload = detectZoom;
         window.onresize = detectZoom;
-    </script>
+
+</script>
 </body>
 </html>

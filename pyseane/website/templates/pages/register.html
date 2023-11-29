@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page d'Inscription</title>
-  <!-- Ajouter les liens vers les fichiers Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Inscription</title>
+    <!-- Ajouter les liens vers les fichiers Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
     body {
       background: linear-gradient(to right, #ff0000, #000000); /* Dégradé de rouge et de noir */
       height: 100vh;
@@ -80,50 +80,52 @@
     .login-link a:hover {
       color: #cc0000; /* Une teinte plus sombre de rouge au survol */
     }
-  </style>
+
+    </style>
 </head>
 <body>
 
-  <div class="register-container">
+<div class="register-container">
     <h2>Inscription</h2>
     <form method="post" action="">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
-        {{ form.username }}
-      </div>
-      <div class="form-group">
-        <label for="email">Adresse e-mail</label>
-        {{ form.email }}
-      </div>
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        {{ form.password }}
-      </div>
-      <div class="form-check mb-4">
-        {{ form.accept_terms }}
-      <label class="form-check-label" for="checkTerms">
-        I have read and accepted the <a href="cgu">Terms and Conditions</a>
-      </label>
-    </div>
-      <button type="submit" class="btn btn-register">S'Inscrire</button>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            {{ form.password }}
+        </div>
+        <div class="form-check mb-4">
+            {{ form.accept_terms }}
+            <label class="form-check-label" for="checkTerms">
+                I have read and accepted the <a href="cgu">Terms and Conditions</a>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-register">S'Inscrire</button>
     </form>
     {% if messages %}
-  <div class="messages">
-      {% for message in messages %}
-          <p{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; padding-top: 10px;">{{ message }}</p>
-      {% endfor %}
-  </div>
-  {% endif %}
-    <div class="login-link">
-      <p>Vous avez déjà un compte? <a href="login">Connectez-vous ici</a></p>
+    <div class="messages">
+        {% for message in messages %}
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; padding-top: 10px;">{{
+        message }}</p>
+        {% endfor %}
     </div>
-  </div>
+    {% endif %}
+    <div class="login-link">
+        <p>Vous avez déjà un compte? <a href="login">Connectez-vous ici</a></p>
+    </div>
+</div>
 
-  <!-- Ajouter le lien vers le fichier Bootstrap JS et jQuery (optionnel) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Ajouter le lien vers le fichier Bootstrap JS et jQuery (optionnel) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

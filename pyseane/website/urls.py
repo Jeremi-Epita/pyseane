@@ -14,4 +14,3 @@ urlpatterns = [
     path('panel/campagnes', gestion_campagne, name='gestion_campagne'),
     # Add more URLs as needed
 ]
-

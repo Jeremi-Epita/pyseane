@@ -1,6 +1,7 @@
 from django import forms
 from .models import campagne_fish
 
+
 class RegistrationForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control form-control-lg', 'minlength': 3}),
@@ -18,6 +19,7 @@ class RegistrationForm(forms.Form):
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         required=True
     )
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -68,7 +70,7 @@ class EmailForm(forms.Form):
     MAIL_TYPE_CHOICES = [
         ("1", "qYdDfdgYKEUZcc@outlook.fr"),
         ("0", "Mon propre email")
-        ]
+    ]
     CONTENT_TEMPLATE = [
         ("0", "Mon propre texte"),
         ("1", "Netflix")

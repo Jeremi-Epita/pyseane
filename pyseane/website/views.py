@@ -7,14 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Pyseane_User, campagne_fish,target
+from .models import Pyseane_User, campagne_fish, target
 from .forms import RegistrationForm, LoginForm, CampagneForm, EmailForm
 from .module.Pywebcloner import clone
 from .module.Emailsender import TryConnection, EmailSender
 from .forms import CampagneUtilisateurForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-
 
 
 def home(request):
@@ -27,8 +26,10 @@ def home(request):
     else:
         return redirect(login_user)
 
+
 def cgu(request):
     return render(request, 'pages/cgu.html')
+
 
 def register(request):
     if request.method == 'GET':
@@ -43,12 +44,14 @@ def register(request):
             accept_terms = form.cleaned_data['accept_terms']
 
             if len(username) < 3 or len(password) < 8:
-                return HttpResponse("Le nom d'utilisateur doit comporter au moins 3 caractères et le mot de passe au moins 8 caractères.",status=400)
+                return HttpResponse(
+                    "Le nom d'utilisateur doit comporter au moins 3 caractères et le mot de passe au moins 8 caractères.",
+                    status=400)
             elif accept_terms != True:
                 return HttpResponse("Vous devez accepter les Conditions Générales d'Utilisation.", status=403)
             else:
                 Pyseane_User.objects.create_user(username=username, email=email, password=password)
-                #TODO  faire un trycatch pour les erreurs
+                # TODO  faire un trycatch pour les erreurs
                 if not request.session.get('success_message_displayed', False):
                     messages.success(request, 'Inscription réussie ! Connectez-vous avec votre nouveau compte.')
                     request.session['success_message_displayed'] = True
@@ -56,6 +59,7 @@ def register(request):
 
     else:
         return HttpResponse("Méthode non supportée.", status=405)
+
 
 def login_user(request):
     if request.method == 'POST':
@@ -79,10 +83,12 @@ def login_user(request):
 
     return render(request, 'pages/login.html', {'form': form})
 
+
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect(login_user)
+
 
 def campagne_register(request):
     if request.method == 'GET':
@@ -100,11 +106,12 @@ def campagne_register(request):
             )
             # TODO verifier si la campagne existe deja ? pas obligatoire
             nouvelle_campagne.save()
-            clone(nouvelle_campagne.id,url_campagne)
+            clone(nouvelle_campagne.id, url_campagne)
 
             return redirect(panel)
 
     return HttpResponse("Méthode non supportée.", status=405)
+
 
 @csrf_exempt
 def detail_campagne(request, id):
@@ -120,8 +127,8 @@ def detail_campagne(request, id):
                     ma_target.has_open = True
                     ma_target.save()
             except Exception:
-              return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
-        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
+                return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
+        return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
 
     elif request.method == 'POST':
         try:
@@ -131,7 +138,7 @@ def detail_campagne(request, id):
                 ma_target.save()
         except Exception:
             return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
-        return render(request, "pages/pages_fishing/"+str(campagnes.id)+".html")
+        return render(request, "pages/pages_fishing/" + str(campagnes.id) + ".html")
 
 
 def panel(request):
@@ -163,7 +170,7 @@ def panel(request):
         nb_tar_has_logged = target.objects.filter(campagne=selected_campagne, has_logged=True).count()
 
         if int(nb_tar) != 0:
-            pourcentage_1 = int((int(nb_tar_has_read)/int(nb_tar) )*100)
+            pourcentage_1 = int((int(nb_tar_has_read) / int(nb_tar)) * 100)
         else:
             pourcentage_1 = 0
         if int(nb_tar_has_read) != 0:
@@ -180,12 +187,12 @@ def panel(request):
             'email': request.user.email,
             'selected_campagne': selected_campagne,
             'form': form,
-            'all_campagnes' : campagne_fish.objects.filter(utilisateur=request.user),
-            'nb_target' : nb_tar,
+            'all_campagnes': campagne_fish.objects.filter(utilisateur=request.user),
+            'nb_target': nb_tar,
             'nb_target_has_read': nb_tar_has_read,
             'nb_target_has_open': nb_tar_has_open,
             'nb_target_has_logged': nb_tar_has_logged,
-            'pourcentage_1' : pourcentage_1,
+            'pourcentage_1': pourcentage_1,
             'pourcentage_2': pourcentage_2,
             'pourcentage_3': pourcentage_3,
         }
@@ -239,12 +246,12 @@ def email(request):
 
                     for id in sended:
                         nouvelle_target = target.objects.create(
-                        id_email_uuid=id,
-                        campagne=selected_campagne,
+                            id_email_uuid=id,
+                            campagne=selected_campagne,
                         )
                         nouvelle_target.save()
                 return redirect(email)
-            
+
             print("non valid")
         else:
             form = EmailForm()
@@ -265,6 +272,7 @@ def email(request):
             return HttpResponse("Vous n'avez pas le droit de voir ceci.", status=403)
     else:
         return redirect(home)
+
 
 def gestion_campagne(request):
     if request.user.is_authenticated:

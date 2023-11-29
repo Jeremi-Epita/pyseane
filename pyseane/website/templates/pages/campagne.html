@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Création de Campagne</title>
-  <!-- Ajouter les liens vers les fichiers Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de Campagne</title>
+    <!-- Ajouter les liens vers les fichiers Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
     body {
       background: linear-gradient(to right, #ff0000, #000000); /* Dégradé de rouge et de noir */
       height: 100vh;
@@ -70,31 +70,32 @@
     .btn-create-campaign:hover {
       background-color: #cc0000; /* Une teinte plus sombre de rouge au survol */
     }
-  </style>
+
+    </style>
 </head>
 <body>
 
-  <div class="campaign-container">
+<div class="campaign-container">
     <h2>Création de Campagne</h2>
     <h4>Veuillez donner un nom à votre campagne et l'URL que vous souhaitez cloner.</h4>
     <form method="post" action="">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="campaign-name">Nom de la Campagne</label>
-        {{ form.name }}
-      </div>
-      <div class="form-group">
-        <label for="campaign-url">URL à Cloner</label>
-        {{ form.url }}
-      </div>
-      <button type="submit" class="btn btn-create-campaign">Créer la Campagne</button>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="campaign-name">Nom de la Campagne</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="campaign-url">URL à Cloner</label>
+            {{ form.url }}
+        </div>
+        <button type="submit" class="btn btn-create-campaign">Créer la Campagne</button>
     </form>
-  </div>
+</div>
 
-  <!-- Ajouter le lien vers le fichier Bootstrap JS et jQuery (optionnel) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Ajouter le lien vers le fichier Bootstrap JS et jQuery (optionnel) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
