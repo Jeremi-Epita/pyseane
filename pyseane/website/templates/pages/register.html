@@ -109,12 +109,9 @@
         </div>
         <button type="submit" class="btn btn-register">S'Inscrire</button>
     </form>
-    {% if messages %}
+    {% if message %}
     <div class="messages">
-        {% for message in messages %}
-        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; padding-top: 10px;">{{
-        message }}</p>
-        {% endfor %}
+        <p style="color: {{color}}; padding-top: 10px;">{{message}}</p>
     </div>
     {% endif %}
     <div class="login-link">
