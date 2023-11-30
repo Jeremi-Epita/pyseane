@@ -14,15 +14,14 @@ Dans le but d'une campagne de phishing, Pyseane permet de de gérer une campagne
 
 ## Installation de l'environnement
 
-#### Donner les droits d'execution au différents fichier de configuration
+#### Se déplacer dans le bon répertoire
 ```
-chmod +x config.sh
-chmod +x start.sh
-chmod +x end.sh
+cd pyseane
 ```
 
-#### Lancer le fichier de config permettant d'installer les dépendances
+#### Donner les droits d'execution et lancer le fichier de config permettant d'installer les dépendances
 ```
+chmod +x config.sh
 sudo ./config.sh
 ```
 
@@ -30,7 +29,7 @@ Ce fichier va installer python3, les dépendances fichiers de python puis docker
 
 ## Ouverture et fermeture de l'application
 
-#### Lancer l'application avec le fichier start
+#### Lancer l'application avec ces commandes
 ```
 sudo docker-compose up -d
 python3 manage.py makemigrations
@@ -49,36 +48,37 @@ sudo docker-compose down
 
 #### 1. Creation d'un compte
 
-[<img src="img/Inscription.png" width="250"/>](img/Inscription.png)
+[<img src="pyseane/img/Inscription.png" width="250"/>](img/Inscription.png)
 
 Il faut donner un nom d'utilisateur, une adresse e-mail et un mot de passe.
 
 #### 2. Connexion à votre compte
 
-[<img src="img/Connexion.png" width="250"/>](img/Connexion.png)
+[<img src="pyseane/img/Connexion.png" width="250"/>](img/Connexion.png)
 
 #### 3. Creation de la campagne de phishing
 
-[<img src="img/Campagne.png" width="250"/>](img/Campagne.png)
+[<img src="pyseane/img/Campagne.png" width="250"/>](img/Campagne.png)
 
 Il faut rentrer comme le nom de la campagne et la page à cloner. De préference, il faut mettre une page avec un formulaire.
 
 #### 4. Accès à la page principale
 
-[<img src="img/Dashboard.png" width="250"/>](img/Dasboard.png)
+[<img src="pyseane/img/Dashboard.png" width="500"/>](img/Dasboard.png)
+
 A travers cette page, vous pouvez voir le nombre de personne ayant ouvert le mail, cliqué sur le lien, et rentré ses identifiants de connexion.
 
 
 #### 5. Voir la page qui a été cloné
 
-[<img src="img/Phishing.png" width="250"/>](img/Phishing.png)
+[<img src="pyseane/img/Phishing.png" width="500"/>](img/Phishing.png)
 
 Sur cette page, vous pouvez créer une autre campagne de phishing ou à quoi ressemble la nouvelle page cloné.
 
 
 #### 6. Envoie de mail
 
-[<img src="img/Mail.png" width="250"/>](img/Mail.png)
+[<img src="pyseane/img/Mail.png" width="500"/>](img/Mail.png)
 
 Sur cette page, vous pouvez rentrer les destinataires de mail avec le contenu du mail avec le lien de phishing.
 
